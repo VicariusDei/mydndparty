@@ -16,8 +16,11 @@ La dashboard e i menu non devono mostrare dati fittizi. Ogni sezione deve rispet
 - Campagna attiva.
 - Party / personaggi da `mdp_party_members`.
 - Inventario da `mdp_inventory_items`.
+- CRUD oggetti tramite `inventory/create`, `inventory/update`, `inventory/delete`.
 - Portafoglio da `mdp_wallets` e `mdp_coin_types`.
+- Aggiornamento monete tramite `inventory/wallet/adjust` e `inventory/wallet/update`.
 - Encounter e iniziativa da `mdp_encounters` e `mdp_combatants`.
+- Azioni combattimento tramite `combat/create`, `combat/activate`, `combat/add-party-member`, `combat/add-combatant`, `combat/next-turn`, `combat/new-round`, `combat/effect/add`, `combat/effect/remove`.
 - Dashboard summary tramite `dashboard/summary`.
 
 ### Presente ma non ancora attivo
@@ -26,14 +29,12 @@ La dashboard e i menu non devono mostrare dati fittizi. Ogni sezione deve rispet
 - Richieste amicizia.
 - Ricerca globale.
 - Dado rapido.
-- Nuovo round / avanza turno.
-- Gestione completa effetti.
 - Diario campagna strutturato.
 - Impostazioni da `cfgSistema`, `cfgLingua`, `cfgUtenti`.
 
-## Migrazione legacy: priorità
+## Migrazione legacy completata parzialmente
 
-### 1. Combattimento / iniziativa
+### Combattimento / iniziativa
 
 Origine legacy:
 
@@ -44,10 +45,11 @@ Origine legacy:
 - `dadoIniziativa`
 - `compagnia`
 
-Obiettivo nuova app:
+Portato nella nuova app:
 
 - elenco encounter per campagna;
 - creazione encounter;
+- attivazione encounter;
 - aggiunta PG dal party;
 - aggiunta avversari manuali;
 - ordinamento iniziativa;
@@ -57,7 +59,7 @@ Obiettivo nuova app:
 - applicazione/rimozione effetti;
 - decremento automatico effetti temporanei.
 
-### 2. Inventario e monete
+### Inventario e monete
 
 Origine legacy:
 
@@ -67,18 +69,28 @@ Origine legacy:
 - `monete`
 - `tipoMonete`
 
-Obiettivo nuova app:
+Portato nella nuova app:
 
 - CRUD oggetti;
 - identificato/non identificato;
 - categorie;
 - assegnazione a party o personaggio;
 - modifica quantità;
-- deposito/prelievo monete;
-- calcolo valore totale in oro;
-- calcolo peso.
+- modifica valore;
+- note oggetto;
+- deposito/prelievo monete tramite delta;
+- aggiornamento diretto quantità/deposito via API.
 
-### 3. Campagne / diario
+Da rifinire:
+
+- calcolo valore totale in oro;
+- calcolo peso monete;
+- azioni massive su monete;
+- filtri e ricerca inventario.
+
+## Prossime priorità
+
+### 1. Campagne / diario
 
 Origine legacy:
 
@@ -88,11 +100,11 @@ Origine legacy:
 Obiettivo nuova app:
 
 - selezione campagna attiva;
-- diario campagna;
+- modifica diario campagna;
 - note master;
 - storico eventi reali.
 
-### 4. Social minimo
+### 2. Social minimo
 
 Nuove tabelle da progettare:
 
@@ -107,18 +119,3 @@ Obiettivo nuova app:
 - messaggi reali;
 - notifiche dashboard reali;
 - nessun badge hardcoded.
-
-## Prossimo sviluppo consigliato
-
-Implementare il modulo combattimento completo perché è il cuore del vecchio progetto e ha già dati migrati.
-
-Primo micro-rilascio:
-
-1. API `combat/create`;
-2. API `combat/add-party-member`;
-3. API `combat/add-combatant`;
-4. API `combat/next-turn`;
-5. API `combat/new-round`;
-6. API `combat/effect/add`;
-7. API `combat/effect/remove`;
-8. aggiornamento `CombatPage.vue` con controlli reali.
