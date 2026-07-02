@@ -67,7 +67,7 @@
                   <h2 class="hero-title">{{ campaignTitle }}</h2>
                   <p class="hero-subtitle">{{ campaignSubtitle }}</p>
                   <div class="hero-actions">
-                    <ion-button class="rpg-button rpg-button-primary" expand="block" router-link="/tabs/party">Party</ion-button>
+                    <ion-button class="rpg-button rpg-button-primary" expand="block" router-link="/tabs/campaigns">Campagne</ion-button>
                     <ion-button class="rpg-button rpg-button-success" expand="block" router-link="/tabs/combat">Combattimento</ion-button>
                     <ion-button class="rpg-button rpg-button-gold" expand="block" router-link="/tabs/inventory">Inventario</ion-button>
                   </div>
@@ -125,13 +125,7 @@
 
               <article class="fantasy-panel missions-panel">
                 <div class="panel-header"><h3 class="panel-title">✉ Messaggi</h3></div>
-                <div class="missions-list" v-if="summary?.messages.length">
-                  <div v-for="message in summary.messages" :key="JSON.stringify(message)" class="mission-row">
-                    <div class="mission-icon">✉</div>
-                    <div><p class="mission-title">Messaggio</p><p class="mission-copy">{{ message }}</p></div>
-                  </div>
-                </div>
-                <p v-else class="entity-meta">Nessun messaggio presente. La sezione verrà alimentata quando introdurremo le tabelle messaggi.</p>
+                <p class="entity-meta">Nessun messaggio presente. La sezione verrà alimentata quando introdurremo le tabelle messaggi.</p>
               </article>
 
               <article class="fantasy-panel online-panel">
@@ -231,12 +225,12 @@ const emptyStats: DashboardStats = {
 
 const navItems = computed(() => [
   { label: 'Dashboard', icon: '⌂', to: '/tabs/dashboard', active: true },
+  { label: 'Campagne', icon: '▣', to: '/tabs/campaigns', active: false, badge: stats.value.campaigns || undefined },
   { label: 'Party', icon: '⚔', to: '/tabs/party', active: false, badge: stats.value.party_members || undefined },
   { label: 'Inventario', icon: '◈', to: '/tabs/inventory', active: false, badge: stats.value.inventory_items || undefined },
   { label: 'Combattimento', icon: '♜', to: '/tabs/combat', active: false, badge: stats.value.combatants || undefined },
   { label: 'Messaggi', icon: '✉', to: '/tabs/more', active: false, badge: stats.value.messages || undefined },
-  { label: 'Richieste', icon: '♙', to: '/tabs/more', active: false, badge: stats.value.friend_requests || undefined },
-  { label: 'Altro', icon: '⚙', to: '/tabs/more', active: false }
+  { label: 'Richieste', icon: '♙', to: '/tabs/more', active: false, badge: stats.value.friend_requests || undefined }
 ]);
 
 const stats = computed(() => summary.value?.stats || emptyStats);
