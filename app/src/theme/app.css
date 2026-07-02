@@ -142,3 +142,61 @@ ion-button.action-button {
   min-height: 52px;
   font-weight: 800;
 }
+
+.auth-page {
+  display: flex;
+  align-items: center;
+}
+
+.auth-card {
+  max-width: 560px;
+  margin: 28px auto;
+  width: calc(100% - 32px);
+}
+
+.auth-form {
+  display: grid;
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.auth-form ion-input {
+  --background: rgba(255, 255, 255, 0.035);
+  --border-color: rgba(213, 162, 76, 0.22);
+  --border-radius: 16px;
+  --color: #f4ead9;
+  --highlight-color-focused: #d5a24c;
+}
+
+.auth-check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #bdb09e;
+  font-size: 0.9rem;
+}
+
+.auth-links {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 22px;
+}
+
+.auth-links a {
+  color: #d5a24c;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.auth-error {
+  margin: 0;
+  color: #ffb4a8;
+  font-weight: 700;
+}
+
+.auth-success {
+  margin: 0;
+  color: #d7f5bc;
+  font-weight: 700;
+}
