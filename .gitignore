@@ -1,7 +1,14 @@
 # Configurazioni locali
 legacy/original-php/dbConfig.php
+api/config/config.php
 .env
 *.local.php
+
+# Frontend build / dipendenze
+app/node_modules/
+node_modules/
+dist/
+www/
 
 # OS / editor
 .DS_Store
