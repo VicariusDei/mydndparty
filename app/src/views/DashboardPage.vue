@@ -7,70 +7,54 @@
             <div class="brand-die">d20</div>
             <div>
               <h1 class="brand-title">MyDnDParty</h1>
-              <p class="brand-subtitle">Il tuo mondo. Le tue storie. Il vostro destino.</p>
+              <p class="brand-subtitle">Dashboard operativa su dati reali.</p>
             </div>
           </div>
 
           <div class="top-search" aria-label="Ricerca globale">
             <span>⌕</span>
-            <span>Cerca campagne, personaggi, giocatori...</span>
-            <span class="search-key">CTRL + K</span>
+            <span>Ricerca globale non ancora attiva</span>
+            <span class="search-key">Prossimo step</span>
           </div>
 
           <div class="top-actions">
-            <div class="icon-square is-optional" aria-label="Notifiche">♟<span class="status-badge">3</span></div>
-            <div class="icon-square is-optional" aria-label="Messaggi">✉<span class="status-badge">2</span></div>
+            <div class="icon-square is-optional" aria-label="Richieste amicizia">♙<span v-if="stats.friend_requests" class="status-badge">{{ stats.friend_requests }}</span></div>
+            <div class="icon-square is-optional" aria-label="Messaggi">✉<span v-if="stats.messages" class="status-badge">{{ stats.messages }}</span></div>
             <div class="profile-chip">
               <div class="profile-avatar">DM</div>
               <div>
-                <p class="profile-name">Arconte87</p>
-                <p class="profile-role">Dungeon Master</p>
+                <p class="profile-name">Master</p>
+                <p class="profile-role">Utente autenticato</p>
               </div>
             </div>
           </div>
         </header>
 
         <nav class="mobile-nav" aria-label="Navigazione rapida">
-          <span
-            v-for="item in navItems"
-            :key="item.label"
-            class="mobile-nav-item"
-            :class="{ 'is-active': item.active }"
-          >
+          <router-link v-for="item in navItems" :key="item.label" class="mobile-nav-item" :class="{ 'is-active': item.active }" :to="item.to">
             {{ item.icon }} {{ item.label }}
-          </span>
+          </router-link>
         </nav>
 
         <div class="dashboard-layout">
           <aside class="sidebar" aria-label="Menu principale">
             <nav class="sidebar-nav">
-              <a
-                v-for="item in navItems"
-                :key="item.label"
-                href="#"
-                class="sidebar-item"
-                :class="{ 'is-active': item.active }"
-              >
+              <router-link v-for="item in navItems" :key="item.label" :to="item.to" class="sidebar-item" :class="{ 'is-active': item.active }">
                 <span class="sidebar-icon">{{ item.icon }}</span>
                 <span>{{ item.label }}</span>
                 <span v-if="item.badge" class="nav-badge">{{ item.badge }}</span>
-              </a>
+              </router-link>
             </nav>
 
             <div class="sidebar-lore">
               <div class="campfire-scene">♜ ⚔ 🔥 ⚔ ♜</div>
-              <p class="lore-copy">
-                “Se il narratore tace,<br />
-                lascia che siano i dadi<br />
-                a scrivere il destino.”<br />
-                &gt; _
-              </p>
+              <p class="lore-copy">Le sezioni sono presenti, ma mostrano solo dati reali o stati vuoti.</p>
             </div>
 
             <div class="sidebar-status">
-              <span>Modalità: <strong>Dungeon Master</strong></span>
-              <span>Server: <strong>MyDnDParty Online</strong></span>
-              <span>Regole: <strong>Personalizzate</strong></span>
+              <span>Campagne: <strong>{{ stats.campaigns }}</strong></span>
+              <span>Messaggi: <strong>{{ stats.messages }}</strong></span>
+              <span>Richieste: <strong>{{ stats.friend_requests }}</strong></span>
             </div>
           </aside>
 
@@ -83,39 +67,40 @@
                   <h2 class="hero-title">{{ campaignTitle }}</h2>
                   <p class="hero-subtitle">{{ campaignSubtitle }}</p>
                   <div class="hero-actions">
-                    <ion-button class="rpg-button rpg-button-primary" expand="block" router-link="/tabs/dashboard">Continua</ion-button>
-                    <ion-button class="rpg-button rpg-button-success" expand="block" router-link="/tabs/combat">Crea sessione</ion-button>
-                    <ion-button class="rpg-button rpg-button-gold" expand="block" router-link="/tabs/party">Invita giocatori</ion-button>
+                    <ion-button class="rpg-button rpg-button-primary" expand="block" router-link="/tabs/party">Party</ion-button>
+                    <ion-button class="rpg-button rpg-button-success" expand="block" router-link="/tabs/combat">Combattimento</ion-button>
+                    <ion-button class="rpg-button rpg-button-gold" expand="block" router-link="/tabs/inventory">Inventario</ion-button>
                   </div>
                 </div>
               </article>
 
               <article class="fantasy-panel next-session-panel">
-                <div class="panel-header">
-                  <h3 class="panel-title">⌛ Prossima sessione</h3>
+                <div class="panel-header"><h3 class="panel-title">⚔ Combattimento attivo</h3></div>
+                <div class="session-body" v-if="summary?.active_encounter">
+                  <p class="session-date">{{ summary.active_encounter.name }}</p>
+                  <p class="session-time">Round {{ summary.active_encounter.current_round }}</p>
+                  <p class="session-title">{{ summary.combatants.length }} combattenti caricati</p>
+                  <p class="session-copy">Dati recuperati da encounter e combattenti migrati.</p>
+                  <ion-button class="rpg-button rpg-button-primary" expand="block" router-link="/tabs/combat">Apri iniziativa →</ion-button>
                 </div>
-                <div class="session-body">
-                  <p class="session-date">Sabato 25 Maggio</p>
-                  <p class="session-time">20:30 - 00:30</p>
-                  <p class="session-title">Episodio 7: Il Forte Dimenticato</p>
-                  <p class="session-copy">I PG esplorano le rovine alla ricerca del Cristallo Nero.</p>
-                  <ion-button class="rpg-button rpg-button-primary" expand="block" fill="solid" router-link="/tabs/combat">Vedi dettagli →</ion-button>
+                <div class="session-body" v-else>
+                  <p class="session-title">Nessun combattimento attivo</p>
+                  <p class="session-copy">La sezione è pronta, ma non ci sono encounter per la campagna attiva.</p>
                 </div>
               </article>
 
               <article class="fantasy-panel calendar-panel">
                 <div class="panel-header">
-                  <h3 class="panel-title">▣ Calendario eventi</h3>
-                  <span class="panel-link">Vedi tutto</span>
+                  <h3 class="panel-title">▣ Stato dati</h3>
+                  <span class="panel-link">Reale</span>
                 </div>
                 <div class="event-list">
-                  <div v-for="event in events" :key="event.date + event.title" class="event-row">
-                    <div class="event-date" v-html="event.date"></div>
+                  <div v-for="stat in statRows" :key="stat.label" class="event-row">
+                    <div class="event-date">{{ stat.value }}</div>
                     <div>
-                      <p class="event-title">{{ event.title }}</p>
-                      <p class="event-meta">{{ event.meta }}</p>
+                      <p class="event-title">{{ stat.label }}</p>
+                      <p class="event-meta">{{ stat.meta }}</p>
                     </div>
-                    <span class="event-time">{{ event.time }}</span>
                   </div>
                 </div>
               </article>
@@ -125,134 +110,96 @@
               <article class="fantasy-panel party-panel">
                 <div class="panel-header">
                   <h3 class="panel-title">⚔ Personaggi del party</h3>
-                  <span class="panel-kicker">{{ visiblePartyMembers.length }} PG</span>
+                  <span class="panel-kicker">{{ stats.party_members }} PG</span>
                 </div>
-                <div class="character-grid">
-                  <div v-for="member in visiblePartyMembers" :key="member.id" class="character-card">
-                    <div class="avatar-mark">{{ memberInitials(member) }}</div>
+                <div v-if="partyMembers.length" class="character-grid">
+                  <div v-for="member in partyMembers" :key="member.id" class="character-card">
+                    <div class="avatar-mark">{{ memberInitials(member.character_name) }}</div>
                     <p class="entity-name">{{ member.character_name }}</p>
-                    <p class="entity-meta">{{ member.ancestry_name || 'Origine ignota' }}</p>
-                    <p class="entity-meta">{{ member.class_name || 'Classe non definita' }} · Liv. 6</p>
-                    <div class="hp-row">
-                      <span>♥</span>
-                      <span class="hp-bar"><span class="hp-fill" :style="{ width: memberHp(member) + '%' }"></span></span>
-                      <span>{{ memberHp(member) }}/100</span>
-                    </div>
+                    <p class="entity-meta">{{ member.player_name }}</p>
+                    <p class="entity-meta">{{ member.class_name || 'Classe non definita' }} · {{ member.ancestry_name || 'Origine ignota' }}</p>
                   </div>
                 </div>
+                <p v-else class="entity-meta">Nessun personaggio reale nella campagna attiva.</p>
               </article>
 
               <article class="fantasy-panel missions-panel">
-                <div class="panel-header">
-                  <h3 class="panel-title">▰ Missioni attive</h3>
-                </div>
-                <div class="missions-list">
-                  <div v-for="mission in missions" :key="mission.title" class="mission-row">
-                    <div class="mission-icon">{{ mission.icon }}</div>
-                    <div>
-                      <p class="mission-title">{{ mission.title }} <span class="mission-count">{{ mission.step }}</span></p>
-                      <p class="mission-copy">{{ mission.copy }}</p>
-                      <div class="mission-progress"><span :style="{ width: mission.progress + '%' }"></span></div>
-                    </div>
+                <div class="panel-header"><h3 class="panel-title">✉ Messaggi</h3></div>
+                <div class="missions-list" v-if="summary?.messages.length">
+                  <div v-for="message in summary.messages" :key="JSON.stringify(message)" class="mission-row">
+                    <div class="mission-icon">✉</div>
+                    <div><p class="mission-title">Messaggio</p><p class="mission-copy">{{ message }}</p></div>
                   </div>
                 </div>
+                <p v-else class="entity-meta">Nessun messaggio presente. La sezione verrà alimentata quando introdurremo le tabelle messaggi.</p>
               </article>
 
               <article class="fantasy-panel online-panel">
                 <div class="panel-header">
-                  <h3 class="panel-title">● Party online</h3>
-                  <span class="online-count">{{ onlinePlayers.length }} online</span>
+                  <h3 class="panel-title">♙ Richieste amicizia</h3>
+                  <span class="online-count">{{ stats.friend_requests }}</span>
                 </div>
-                <div class="online-list">
-                  <div v-for="player in onlinePlayers" :key="player.id" class="online-row">
-                    <div class="online-avatar">{{ memberInitials(player) }}</div>
-                    <div>
-                      <p class="entity-name">{{ player.player_name }}</p>
-                      <p class="online-status">Online</p>
-                    </div>
-                    <span class="crown">♛</span>
-                  </div>
-                  <ion-button class="rpg-button rpg-button-gold" expand="block" router-link="/tabs/party">Invita giocatori</ion-button>
-                </div>
+                <p class="entity-meta">Nessuna richiesta amicizia presente. La voce resta reale: zero finché non esiste una richiesta nel database.</p>
               </article>
 
               <article class="fantasy-panel dice-panel">
-                <div class="panel-header">
-                  <h3 class="panel-title">◇ Dado rapido</h3>
-                </div>
+                <div class="panel-header"><h3 class="panel-title">◇ Dado rapido</h3></div>
                 <div class="dice-body">
-                  <div class="dice-select"><span>Seleziona dado</span><strong>d20</strong></div>
-                  <div class="dice-result">17</div>
-                  <p class="dice-quote">“La fortuna favorisce chi osa.”</p>
-                  <ion-button class="rpg-button rpg-button-primary" expand="block">Tira il dado</ion-button>
+                  <div class="dice-select"><span>Modulo legacy</span><strong>da migrare</strong></div>
+                  <p class="dice-quote">Qui andrà il roller reale, non un risultato precompilato.</p>
+                  <ion-button class="rpg-button rpg-button-primary" expand="block" disabled>Tira il dado</ion-button>
                 </div>
               </article>
 
               <article class="fantasy-panel log-panel">
                 <div class="panel-header">
-                  <h3 class="panel-title">♜ Log di campagna - ultime voci</h3>
-                  <span class="panel-link">Vedi tutto</span>
+                  <h3 class="panel-title">♜ Combattenti</h3>
+                  <span class="panel-link">{{ stats.combatants }}</span>
                 </div>
-                <div class="log-list">
-                  <div v-for="entry in campaignLog" :key="entry.date + entry.copy" class="log-row">
-                    <span class="log-date">{{ entry.date }}</span>
-                    <p class="log-copy">{{ entry.copy }}</p>
+                <div class="log-list" v-if="combatants.length">
+                  <div v-for="combatant in combatants" :key="combatant.id" class="log-row">
+                    <span class="log-date">{{ combatant.initiative }}</span>
+                    <p class="log-copy">{{ combatant.name }} · {{ combatant.type }}<span v-if="combatant.effects?.length"> · {{ combatant.effects.length }} effetti</span></p>
                   </div>
                 </div>
+                <p v-else class="entity-meta">Nessun combattente presente nell'encounter attivo.</p>
               </article>
 
               <article class="fantasy-panel progress-panel">
-                <div class="panel-header">
-                  <h3 class="panel-title">⚑ Progresso campagna</h3>
-                </div>
+                <div class="panel-header"><h3 class="panel-title">◈ Portafoglio</h3></div>
                 <div class="progress-body">
-                  <div class="progress-nodes">
-                    <span v-for="node in progressNodes" :key="node.icon" class="progress-node" :class="{ 'is-done': node.done }">{{ node.icon }}</span>
-                  </div>
-                  <p class="progress-label">Atto II - Le terre di confine</p>
-                  <div class="campaign-progress-line">
-                    <div class="campaign-progress"><span style="width: 64%"></span></div>
-                    <span class="progress-percent">64%</span>
-                  </div>
-                  <p class="next-objective">Prossimo obiettivo: Il Forte Dimenticato</p>
+                  <p class="progress-label">{{ walletSummary }}</p>
+                  <p class="next-objective">Righe portafoglio reali: {{ stats.wallet_rows }}</p>
                 </div>
               </article>
 
               <article class="fantasy-panel notes-panel">
-                <div class="panel-header">
-                  <h3 class="panel-title">✎ Note del master</h3>
-                </div>
+                <div class="panel-header"><h3 class="panel-title">✎ Note campagna</h3></div>
                 <div class="note-body">
-                  <p>Ricorda di far emergere il conflitto tra i clan nani e l'importanza del Cristallo Nero.</p>
-                  <ul>
-                    <li>Introdurre l'antagonista nel prossimo incontro.</li>
-                    <li>Preparare mappa del Forte.</li>
-                    <li>NPC: Arak Tor, il Traditore.</li>
-                  </ul>
+                  <p>{{ summary?.campaign?.notes || 'Nessuna nota reale presente per la campagna attiva.' }}</p>
                 </div>
               </article>
 
               <article class="fantasy-panel loot-panel">
-                <div class="panel-header">
-                  <h3 class="panel-title">Loot recente</h3>
-                </div>
-                <div class="loot-list">
-                  <div v-for="item in loot" :key="item.name" class="loot-row">
-                    <div class="loot-icon">{{ item.icon }}</div>
+                <div class="panel-header"><h3 class="panel-title">Loot recente</h3></div>
+                <div class="loot-list" v-if="recentInventory.length">
+                  <div v-for="item in recentInventory" :key="item.id" class="loot-row">
+                    <div class="loot-icon">◈</div>
                     <div>
                       <p class="loot-name">{{ item.name }}</p>
-                      <p class="loot-meta">{{ item.meta }}</p>
+                      <p class="loot-meta">{{ item.category || 'Senza categoria' }} · qta {{ item.quantity }} · {{ item.value_gold }} mo</p>
                     </div>
                   </div>
                   <ion-button class="rpg-button rpg-button-gold" expand="block" router-link="/tabs/inventory">Vedi inventario</ion-button>
                 </div>
+                <p v-else class="entity-meta">Nessun oggetto reale in inventario.</p>
               </article>
             </section>
 
             <footer class="rpg-footer">
-              <span>Modalità: <strong>Dungeon Master</strong></span>
+              <span>Campagna: <strong>{{ campaignTitle }}</strong></span>
               <span>Server: <span class="online">MyDnDParty Online</span></span>
-              <span>v1.0.0 &gt; _</span>
+              <span>Dati: reali</span>
             </footer>
           </main>
         </div>
@@ -266,141 +213,54 @@ import { computed, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { IonButton, IonContent, IonPage } from '@ionic/vue';
 import { apiGet } from '../services/api';
-import type { Campaign, PartyMember } from '../types/domain';
-
-type ActiveCampaignPayload = {
-  campaign: Campaign | null;
-};
-
-type PartyPayload = {
-  party_members: PartyMember[];
-};
+import type { Combatant, DashboardStats, DashboardSummary, InventoryItem, PartyMember } from '../types/domain';
 
 const router = useRouter();
-const campaign = ref<Campaign | null>(null);
-const partyMembers = ref<PartyMember[]>([]);
+const summary = ref<DashboardSummary | null>(null);
 
-const demoPartyMembers: PartyMember[] = [
-  {
-    id: -1,
-    campaign_id: 0,
-    user_id: 0,
-    player_name: 'Thalion89',
-    character_name: 'Thalion',
-    class_name: 'Guerriero',
-    ancestry_name: 'Umano',
-    motto: 'Non arretrare',
-    initiative_bonus: 2
-  },
-  {
-    id: -2,
-    campaign_id: 0,
-    user_id: 0,
-    player_name: 'Lyra_Azure',
-    character_name: 'Lyra',
-    class_name: 'Maga',
-    ancestry_name: 'Elfa',
-    motto: 'Luce purificante',
-    initiative_bonus: 4
-  },
-  {
-    id: -3,
-    campaign_id: 0,
-    user_id: 0,
-    player_name: 'Bromgar_Stone',
-    character_name: 'Bromgar',
-    class_name: 'Chierico',
-    ancestry_name: 'Nano',
-    motto: 'Per la montagna',
-    initiative_bonus: 1
-  },
-  {
-    id: -4,
-    campaign_id: 0,
-    user_id: 0,
-    player_name: 'ZyraSilva',
-    character_name: 'Zyra',
-    class_name: 'Ranger',
-    ancestry_name: 'Mezzelfa',
-    motto: 'Nel silenzio',
-    initiative_bonus: 5
-  }
-];
+const emptyStats: DashboardStats = {
+  campaigns: 0,
+  party_members: 0,
+  inventory_items: 0,
+  wallet_rows: 0,
+  encounters: 0,
+  combatants: 0,
+  messages: 0,
+  friend_requests: 0
+};
 
-const navItems = [
-  { label: 'Dashboard', icon: '⌂', active: true },
-  { label: 'Campagne', icon: '▣' },
-  { label: 'Personaggi', icon: '♙' },
-  { label: 'Sessioni', icon: '◴' },
-  { label: 'Calendario', icon: '▦' },
-  { label: 'Party', icon: '⚔' },
-  { label: 'Inventario', icon: '◈' },
-  { label: 'Missioni', icon: '⚑' },
-  { label: 'Messaggi', icon: '✉', badge: 5 },
-  { label: 'Impostazioni', icon: '⚙' }
-];
+const navItems = computed(() => [
+  { label: 'Dashboard', icon: '⌂', to: '/tabs/dashboard', active: true },
+  { label: 'Party', icon: '⚔', to: '/tabs/party', active: false, badge: stats.value.party_members || undefined },
+  { label: 'Inventario', icon: '◈', to: '/tabs/inventory', active: false, badge: stats.value.inventory_items || undefined },
+  { label: 'Combattimento', icon: '♜', to: '/tabs/combat', active: false, badge: stats.value.combatants || undefined },
+  { label: 'Messaggi', icon: '✉', to: '/tabs/more', active: false, badge: stats.value.messages || undefined },
+  { label: 'Richieste', icon: '♙', to: '/tabs/more', active: false, badge: stats.value.friend_requests || undefined },
+  { label: 'Altro', icon: '⚙', to: '/tabs/more', active: false }
+]);
 
-const events = [
-  { date: '25<br>MAG', title: 'Sessione di gioco', meta: 'Il Forte Dimenticato', time: '20:30' },
-  { date: '01<br>GIU', title: 'Sessione di gioco', meta: 'Le Catacombe di Velmora', time: '21:00' },
-  { date: '08<br>GIU', title: 'Evento speciale', meta: 'La Fiera delle Meraviglie', time: '15:00' },
-  { date: '15<br>GIU', title: 'Sessione di gioco', meta: 'La Cripta dei Sussurri', time: '20:30' }
-];
+const stats = computed(() => summary.value?.stats || emptyStats);
+const partyMembers = computed<PartyMember[]>(() => summary.value?.party_members || []);
+const recentInventory = computed<InventoryItem[]>(() => summary.value?.recent_inventory || []);
+const combatants = computed<Combatant[]>(() => summary.value?.combatants || []);
+const campaignTitle = computed(() => summary.value?.campaign?.name || 'Nessuna campagna attiva');
+const campaignSubtitle = computed(() => summary.value?.campaign?.notes || 'Crea o attiva una campagna per alimentare la dashboard.');
 
-const missions = [
-  {
-    icon: '♦',
-    title: 'Il Cristallo Nero',
-    copy: 'Recupera il Cristallo Nero dalle rovine del Forte Dimenticato.',
-    step: '2/4',
-    progress: 50
-  },
-  {
-    icon: '♜',
-    title: 'Alleanze Fragili',
-    copy: 'Ottieni il supporto dei clan nani delle montagne.',
-    step: '1/3',
-    progress: 34
-  },
-  {
-    icon: '✹',
-    title: 'La Minaccia Crescente',
-    copy: 'Indaga sugli attacchi nelle terre di confine.',
-    step: '3/5',
-    progress: 60
-  }
-];
+const statRows = computed(() => [
+  { label: 'Campagne', value: stats.value.campaigns, meta: 'Campagne accessibili all’utente' },
+  { label: 'Personaggi', value: stats.value.party_members, meta: 'Membri del party nella campagna attiva' },
+  { label: 'Inventario', value: stats.value.inventory_items, meta: 'Oggetti migrati o creati' },
+  { label: 'Encounter', value: stats.value.encounters, meta: 'Combattimenti disponibili' }
+]);
 
-const campaignLog = [
-  { date: '18/05', copy: 'I PG hanno sconfitto il Guardiano delle Rovine.' },
-  { date: '12/05', copy: 'Thalion ha trovato: Spada del Giuramento.' },
-  { date: '05/05', copy: 'Lyra ha appreso il rituale: Luce Purificante.' },
-  { date: '28/04', copy: 'Il party è entrato nelle Catacombe di Velmora.' }
-];
+const walletSummary = computed(() => {
+  const wallet = summary.value?.wallet || [];
+  if (!wallet.length) return 'Nessuna moneta registrata.';
+  return wallet.map((row) => `${row.code}: ${row.quantity}`).join(' · ');
+});
 
-const progressNodes = [
-  { icon: '⌂', done: true },
-  { icon: '♣', done: true },
-  { icon: '♜', done: true },
-  { icon: '♦', done: false },
-  { icon: '☠', done: false }
-];
-
-const loot = [
-  { icon: '†', name: 'Spada del Giuramento', meta: 'Non comune' },
-  { icon: '♦', name: "Cristallo dell'Ombra", meta: 'Raro' },
-  { icon: '◉', name: "Monete d'Oro", meta: '245 mo' }
-];
-
-const visiblePartyMembers = computed(() => (partyMembers.value.length ? partyMembers.value : demoPartyMembers).slice(0, 4));
-const onlinePlayers = computed(() => visiblePartyMembers.value.slice(0, 4));
-const campaignTitle = computed(() => campaign.value?.name || 'Le Terre di Ombra e Rovina');
-const campaignSubtitle = computed(
-  () => campaign.value?.notes || 'Un’antica minaccia si risveglia dalle rovine perdute. I confini del regno vacillano e gli eroi sono chiamati a forgiare il proprio destino.'
-);
-
-function memberInitials(member: PartyMember) {
-  return member.character_name
+function memberInitials(name: string) {
+  return name
     .split(' ')
     .map((part) => part[0])
     .join('')
@@ -408,34 +268,13 @@ function memberInitials(member: PartyMember) {
     .toUpperCase();
 }
 
-function memberHp(member: PartyMember) {
-  const base = Math.abs(member.id * 17 + member.initiative_bonus * 11) % 42;
-  return 58 + base;
-}
-
 onMounted(async () => {
-  try {
-    const campaignResponse = await apiGet<ActiveCampaignPayload>('campaigns/active');
-    if (!campaignResponse.ok) {
-      router.replace('/login');
-      return;
-    }
-
-    if (campaignResponse.data?.campaign) {
-      campaign.value = campaignResponse.data.campaign;
-    }
-
-    const partyResponse = await apiGet<PartyPayload>('party/list');
-    if (!partyResponse.ok) {
-      router.replace('/login');
-      return;
-    }
-
-    if (partyResponse.data?.party_members) {
-      partyMembers.value = partyResponse.data.party_members;
-    }
-  } catch {
+  const response = await apiGet<DashboardSummary>('dashboard/summary');
+  if (!response.ok) {
     router.replace('/login');
+    return;
   }
+
+  summary.value = response.data || null;
 });
 </script>
