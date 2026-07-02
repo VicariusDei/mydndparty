@@ -58,15 +58,20 @@ async function submitLogin() {
   error.value = '';
   loading.value = true;
 
-  const response = await login(form);
-  loading.value = false;
+  try {
+    const response = await login({ ...form });
 
-  if (!response.ok) {
-    error.value = response.error || 'Accesso non riuscito';
-    return;
+    if (!response.ok) {
+      error.value = response.error || 'Accesso non riuscito';
+      return;
+    }
+
+    await router.replace('/tabs/dashboard');
+  } catch (err) {
+    error.value = err instanceof Error ? err.message : 'Errore imprevisto durante il login.';
+  } finally {
+    loading.value = false;
   }
-
-  router.replace('/tabs/dashboard');
 }
 
 function loginWithGoogle() {
