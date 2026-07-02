@@ -43,14 +43,19 @@ async function submitReset() {
   message.value = '';
   loading.value = true;
 
-  const response = await resetPassword({ token: token.value, password: password.value });
-  loading.value = false;
+  try {
+    const response = await resetPassword({ token: token.value, password: password.value });
 
-  if (!response.ok) {
-    error.value = response.error || 'Reset non riuscito';
-    return;
+    if (!response.ok) {
+      error.value = response.error || 'Reset non riuscito';
+      return;
+    }
+
+    message.value = response.data?.message || 'Password aggiornata.';
+  } catch (err) {
+    error.value = err instanceof Error ? err.message : 'Errore imprevisto durante il reset password.';
+  } finally {
+    loading.value = false;
   }
-
-  message.value = response.data?.message || 'Password aggiornata.';
 }
 </script>
