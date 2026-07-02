@@ -4,7 +4,7 @@ import TabsLayout from '../views/TabsLayout.vue';
 const routes = [
   {
     path: '/',
-    redirect: '/tabs/dashboard'
+    redirect: '/login'
   },
   {
     path: '/login',
