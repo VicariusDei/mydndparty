@@ -1,0 +1,3 @@
+Forced deploy trigger
+Date: 2026-07-02
+Reason: full host refresh requested from ChatGPT
