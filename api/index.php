@@ -73,99 +73,90 @@ try {
         case 'auth/me':
             $authController->me();
             break;
-
         case 'auth/register':
             $authController->register();
             break;
-
         case 'auth/login':
             $authController->login();
             break;
-
         case 'auth/logout':
             $authController->logout();
             break;
-
         case 'auth/password/forgot':
             $authController->forgotPassword();
             break;
-
         case 'auth/password/reset':
             $authController->resetPassword();
             break;
-
         case 'auth/google/start':
             $googleAuthController->start();
             break;
-
         case 'auth/google/callback':
             $googleAuthController->callback();
             break;
-
         case 'dashboard/summary':
             $dashboardController->summary();
             break;
-
         case 'campaigns/list':
             $campaignController->list();
             break;
-
         case 'campaigns/active':
             $campaignController->active();
             break;
-
         case 'campaigns/create':
             $campaignController->create();
             break;
-
         case 'party/list':
             $partyController->list();
             break;
-
         case 'party/create':
             $partyController->create();
             break;
-
         case 'inventory/list':
             $inventoryController->list();
             break;
-
+        case 'inventory/create':
+            $inventoryController->create();
+            break;
+        case 'inventory/update':
+            $inventoryController->update();
+            break;
+        case 'inventory/delete':
+            $inventoryController->delete();
+            break;
+        case 'inventory/wallet/adjust':
+            $inventoryController->walletAdjust();
+            break;
+        case 'inventory/wallet/update':
+            $inventoryController->walletUpdate();
+            break;
         case 'combat/active':
             $combatController->active();
             break;
-
         case 'combat/create':
             $combatController->create();
             break;
-
         case 'combat/activate':
             $combatController->activate();
             break;
-
         case 'combat/add-party-member':
             $combatController->addPartyMember();
             break;
-
         case 'combat/add-combatant':
             $combatController->addCombatant();
             break;
-
         case 'combat/next-turn':
             $combatController->nextTurn();
             break;
-
         case 'combat/new-round':
             $combatController->newRound();
             break;
-
         case 'combat/effect/add':
             $combatController->addEffect();
             break;
-
         case 'combat/effect/remove':
             $combatController->removeEffect();
             break;
-
         default:
             Response::error('Route non trovata: ' . $route, 404);
     }
