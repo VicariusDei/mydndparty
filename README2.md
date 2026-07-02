@@ -1,3 +1,0 @@
-# MyDndParty
-
-Repository iniziale.
