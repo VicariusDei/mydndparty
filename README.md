@@ -62,11 +62,27 @@ poi compilare le credenziali del database. Il file reale `config.php` non viene 
 /api/index.php?route=demo/dashboard
 ```
 
+## Database
+
+Importare lo schema iniziale:
+
+```text
+database/schema.sql
+```
+
+Per migrare i dati dal vecchio dump legacy usare:
+
+```text
+docs/data-migration.md
+api/tools/migrate-legacy.php
+```
+
 ## Documentazione
 
 - `docs/architecture.md`
 - `docs/deployment-aruba.md`
 - `docs/legacy-analysis.md`
+- `docs/data-migration.md`
 
 ## Principio di lavoro
 
