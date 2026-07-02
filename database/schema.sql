@@ -15,9 +15,7 @@ CREATE TABLE mdp_users (
   email_verified_at DATETIME NULL,
   last_login_at DATETIME NULL,
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updated_at DATETIME NULL,
-  INDEX idx_mdp_users_email (email),
-  INDEX idx_mdp_users_google_id (google_id)
+  updated_at DATETIME NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE mdp_remember_tokens (
