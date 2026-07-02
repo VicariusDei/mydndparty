@@ -22,6 +22,11 @@ require_once __DIR__ . '/modules/Campaigns/CampaignRepository.php';
 require_once __DIR__ . '/modules/Campaigns/CampaignController.php';
 require_once __DIR__ . '/modules/Party/PartyRepository.php';
 require_once __DIR__ . '/modules/Party/PartyController.php';
+require_once __DIR__ . '/modules/Inventory/InventoryRepository.php';
+require_once __DIR__ . '/modules/Inventory/InventoryController.php';
+require_once __DIR__ . '/modules/Combat/CombatRepository.php';
+require_once __DIR__ . '/modules/Combat/CombatController.php';
+require_once __DIR__ . '/modules/Dashboard/DashboardController.php';
 
 session_set_cookie_params([
     'lifetime' => 0,
@@ -58,6 +63,11 @@ try {
     $campaignController = new CampaignController($campaignRepository, $config);
     $partyRepository = new PartyRepository($pdo);
     $partyController = new PartyController($partyRepository, $campaignRepository, $config);
+    $inventoryRepository = new InventoryRepository($pdo);
+    $inventoryController = new InventoryController($inventoryRepository, $campaignRepository, $config);
+    $combatRepository = new CombatRepository($pdo);
+    $combatController = new CombatController($combatRepository, $campaignRepository, $config);
+    $dashboardController = new DashboardController($campaignRepository, $partyRepository, $inventoryRepository, $combatRepository, $config);
 
     switch ($route) {
         case 'auth/me':
@@ -92,6 +102,10 @@ try {
             $googleAuthController->callback();
             break;
 
+        case 'dashboard/summary':
+            $dashboardController->summary();
+            break;
+
         case 'campaigns/list':
             $campaignController->list();
             break;
@@ -110,6 +124,14 @@ try {
 
         case 'party/create':
             $partyController->create();
+            break;
+
+        case 'inventory/list':
+            $inventoryController->list();
+            break;
+
+        case 'combat/active':
+            $combatController->active();
             break;
 
         default:
