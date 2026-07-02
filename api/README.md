@@ -6,25 +6,32 @@ Backend PHP 8 senza dipendenze esterne, progettato per hosting Aruba basic senza
 
 1. Copiare `api/config/config.example.php` in `api/config/config.php`.
 2. Inserire credenziali database reali nel file `config.php`.
-3. Importare `database/schema.sql` e, per test, `database/seeds/demo.sql`.
+3. Importare `database/schema.sql`. Se il DB esiste gia', importare `database/migrations/002_auth.sql`.
 4. Caricare la cartella `api/` via FTP/FTPS.
 5. Testare `/api/index.php?route=health`.
 
-## Rotte iniziali
+## Rotte auth
 
-- `health`
-- `demo/dashboard`
+- `auth/me`
+- `auth/register`
+- `auth/login`
+- `auth/logout`
+- `auth/password/forgot`
+- `auth/password/reset`
+- `auth/google/start`
+- `auth/google/callback`
+
+## Rotte dominio iniziali
+
 - `campaigns/list`
 - `campaigns/active`
 - `campaigns/create`
 - `party/list`
 - `party/create`
 
-## Autenticazione temporanea sviluppo
+## Configurazione
 
-In ambiente `local`, se `allow_demo_auth` e' attivo, l'API usa `demo_user_id` dal file config. Questo serve solo per testare rapidamente campagne e party prima del modulo login reale.
-
-In produzione questa opzione deve essere disattivata.
+Il file reale `api/config/config.php` deve contenere credenziali database, URL pubblico dell'app, opzioni cookie/sessione, mittente email e parametri OAuth Google. Vedi `docs/auth-setup.md`.
 
 ## Regola progettuale
 
