@@ -3,6 +3,8 @@
 return [
     'app_env' => 'local',
     'app_debug' => true,
+    'allow_demo_auth' => true,
+    'demo_user_id' => 1,
     'db' => [
         'host' => 'localhost',
         'name' => 'mydndparty',
