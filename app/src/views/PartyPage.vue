@@ -14,29 +14,46 @@
       </section>
 
       <section class="section-block">
-        <div class="entity-list">
-          <article class="fantasy-card entity-card" v-for="member in members" :key="member.name">
+        <div class="entity-list" v-if="members.length > 0">
+          <article class="fantasy-card entity-card" v-for="member in members" :key="member.id">
             <div>
-              <p class="entity-name">{{ member.name }}</p>
-              <p class="entity-meta">{{ member.player }} · {{ member.role }}</p>
+              <p class="entity-name">{{ member.character_name }}</p>
+              <p class="entity-meta">{{ member.player_name }} · {{ member.class_name || 'Classe non definita' }} {{ member.ancestry_name || '' }}</p>
               <div class="badge-row">
-                <span class="fantasy-badge">Ini +{{ member.initiative }}</span>
-                <span class="fantasy-badge">{{ member.group }}</span>
+                <span class="fantasy-badge">Ini +{{ member.initiative_bonus }}</span>
+                <span class="fantasy-badge" v-if="member.motto">{{ member.motto }}</span>
               </div>
             </div>
           </article>
         </div>
+
+        <article class="fantasy-card entity-card" v-else>
+          <div>
+            <p class="entity-name">Nessun personaggio</p>
+            <p class="entity-meta">Importa il seed demo o crea il primo membro del party.</p>
+          </div>
+        </article>
       </section>
     </ion-content>
   </ion-page>
 </template>
 
 <script setup lang="ts">
+import { onMounted, ref } from 'vue';
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
+import { apiGet } from '../services/api';
+import type { PartyMember } from '../types/domain';
 
-const members = [
-  { name: 'Mirael', player: 'Laura', role: 'Ranger mezzelfa', initiative: 4, group: 'Bosco Cavo' },
-  { name: 'Thoran', player: 'Marco', role: 'Paladino nano', initiative: 1, group: 'Bosco Cavo' },
-  { name: 'Nym', player: 'Sara', role: 'Ladra halfling', initiative: 5, group: 'Bosco Cavo' }
-];
+type PartyPayload = {
+  party_members: PartyMember[];
+};
+
+const members = ref<PartyMember[]>([]);
+
+onMounted(async () => {
+  const response = await apiGet<PartyPayload>('party/list');
+  if (response.ok && response.data?.party_members) {
+    members.value = response.data.party_members;
+  }
+});
 </script>
