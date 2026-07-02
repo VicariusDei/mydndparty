@@ -40,14 +40,19 @@ async function submitForgot() {
   message.value = '';
   loading.value = true;
 
-  const response = await forgotPassword({ email: email.value });
-  loading.value = false;
+  try {
+    const response = await forgotPassword({ email: email.value });
 
-  if (!response.ok) {
-    error.value = response.error || 'Invio non riuscito';
-    return;
+    if (!response.ok) {
+      error.value = response.error || 'Invio non riuscito';
+      return;
+    }
+
+    message.value = response.data?.message || 'Controlla la tua email.';
+  } catch (err) {
+    error.value = err instanceof Error ? err.message : 'Errore imprevisto durante il recupero password.';
+  } finally {
+    loading.value = false;
   }
-
-  message.value = response.data?.message || 'Controlla la tua email.';
 }
 </script>
