@@ -30,7 +30,7 @@
         <article class="fantasy-card entity-card" v-else>
           <div>
             <p class="entity-name">Nessun personaggio</p>
-            <p class="entity-meta">Importa il seed demo o crea il primo membro del party.</p>
+            <p class="entity-meta">Crea il primo membro del party.</p>
           </div>
         </article>
       </section>
@@ -40,6 +40,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
 import { apiGet } from '../services/api';
 import type { PartyMember } from '../types/domain';
@@ -48,11 +49,17 @@ type PartyPayload = {
   party_members: PartyMember[];
 };
 
+const router = useRouter();
 const members = ref<PartyMember[]>([]);
 
 onMounted(async () => {
   const response = await apiGet<PartyPayload>('party/list');
-  if (response.ok && response.data?.party_members) {
+  if (!response.ok) {
+    router.replace('/login');
+    return;
+  }
+
+  if (response.data?.party_members) {
     members.value = response.data.party_members;
   }
 });
