@@ -1,27 +1,44 @@
 :root {
-  --ion-font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --ion-font-family: "Trebuchet MS", Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
-  --ion-color-primary: #d5a24c;
-  --ion-color-primary-rgb: 213, 162, 76;
-  --ion-color-primary-contrast: #1b1410;
-  --ion-color-primary-contrast-rgb: 27, 20, 16;
-  --ion-color-primary-shade: #bb8f43;
-  --ion-color-primary-tint: #d9ab5e;
+  --rpg-void: #080707;
+  --rpg-night: #0d0b0f;
+  --rpg-panel: #14110f;
+  --rpg-panel-2: #1b1512;
+  --rpg-border: #6f5422;
+  --rpg-border-soft: rgba(199, 155, 70, 0.34);
+  --rpg-gold: #d8b56a;
+  --rpg-gold-bright: #f0d58d;
+  --rpg-purple: #7c2ea8;
+  --rpg-purple-bright: #c06cff;
+  --rpg-green: #75e13f;
+  --rpg-red: #b33333;
+  --rpg-parchment: #dac28a;
+  --rpg-text: #f4ead9;
+  --rpg-muted: #a99d8d;
+  --rpg-shadow: rgba(0, 0, 0, 0.72);
 
-  --ion-color-secondary: #7b3f2f;
-  --ion-color-secondary-rgb: 123, 63, 47;
+  --ion-color-primary: #d8b56a;
+  --ion-color-primary-rgb: 216, 181, 106;
+  --ion-color-primary-contrast: #120e0b;
+  --ion-color-primary-contrast-rgb: 18, 14, 11;
+  --ion-color-primary-shade: #bf9f5d;
+  --ion-color-primary-tint: #dcc07a;
+
+  --ion-color-secondary: #7c2ea8;
+  --ion-color-secondary-rgb: 124, 46, 168;
   --ion-color-secondary-contrast: #ffffff;
   --ion-color-secondary-contrast-rgb: 255, 255, 255;
-  --ion-color-secondary-shade: #6c3729;
-  --ion-color-secondary-tint: #885240;
+  --ion-color-secondary-shade: #6d2894;
+  --ion-color-secondary-tint: #8943b1;
 
-  --ion-background-color: #100d0d;
-  --ion-background-color-rgb: 16, 13, 13;
+  --ion-background-color: #080707;
+  --ion-background-color-rgb: 8, 7, 7;
   --ion-text-color: #f4ead9;
   --ion-text-color-rgb: 244, 234, 217;
-  --ion-card-background: #1a1514;
-  --ion-toolbar-background: #14100f;
-  --ion-tab-bar-background: rgba(18, 14, 13, 0.96);
-  --ion-tab-bar-color: #988d7f;
-  --ion-tab-bar-color-selected: #d5a24c;
+  --ion-card-background: #14110f;
+  --ion-toolbar-background: #0d0b0f;
+  --ion-tab-bar-background: rgba(10, 8, 9, 0.96);
+  --ion-tab-bar-color: #9e927f;
+  --ion-tab-bar-color-selected: #d8b56a;
 }

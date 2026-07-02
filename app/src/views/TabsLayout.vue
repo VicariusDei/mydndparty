@@ -5,7 +5,7 @@
       <ion-tab-bar slot="bottom">
         <ion-tab-button tab="dashboard" href="/tabs/dashboard">
           <ion-icon :icon="homeOutline" />
-          <ion-label>Campagna</ion-label>
+          <ion-label>Dashboard</ion-label>
         </ion-tab-button>
         <ion-tab-button tab="party" href="/tabs/party">
           <ion-icon :icon="peopleOutline" />
@@ -17,7 +17,7 @@
         </ion-tab-button>
         <ion-tab-button tab="combat" href="/tabs/combat">
           <ion-icon :icon="flashOutline" />
-          <ion-label>Combatti</ion-label>
+          <ion-label>Sessione</ion-label>
         </ion-tab-button>
         <ion-tab-button tab="more" href="/tabs/more">
           <ion-icon :icon="ellipsisHorizontalCircleOutline" />
