@@ -1,0 +1,144 @@
+html,
+body,
+ion-app,
+ion-content {
+  background: #100d0d;
+}
+
+.app-page {
+  --background:
+    radial-gradient(circle at top left, rgba(213, 162, 76, 0.18), transparent 26rem),
+    radial-gradient(circle at bottom right, rgba(123, 63, 47, 0.22), transparent 24rem),
+    #100d0d;
+}
+
+.hero-card,
+.fantasy-card {
+  border: 1px solid rgba(213, 162, 76, 0.18);
+  border-radius: 24px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.075), rgba(255,255,255,0.028));
+  box-shadow: 0 24px 70px rgba(0,0,0,0.38);
+  color: #f4ead9;
+}
+
+.hero-card {
+  margin: 18px 16px 12px;
+  padding: 24px;
+}
+
+.hero-eyebrow {
+  margin: 0 0 10px;
+  color: #d5a24c;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.hero-title {
+  margin: 0;
+  font-size: clamp(2rem, 9vw, 3.7rem);
+  line-height: 0.95;
+  letter-spacing: -0.055em;
+}
+
+.hero-subtitle {
+  margin: 14px 0 0;
+  color: #bdb09e;
+  font-size: 1rem;
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  padding: 0 16px 12px;
+}
+
+.stat-card {
+  padding: 16px;
+}
+
+.stat-label {
+  margin: 0 0 8px;
+  color: #a79a8a;
+  font-size: 0.8rem;
+}
+
+.stat-value {
+  margin: 0;
+  color: #f4ead9;
+  font-size: 1.8rem;
+  font-weight: 800;
+}
+
+.section-block {
+  padding: 6px 16px 22px;
+}
+
+.section-title {
+  margin: 16px 0 12px;
+  color: #f4ead9;
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.entity-list {
+  display: grid;
+  gap: 12px;
+}
+
+.entity-card {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 16px;
+}
+
+.entity-name {
+  margin: 0 0 6px;
+  color: #f4ead9;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.entity-meta {
+  margin: 0;
+  color: #a79a8a;
+  font-size: 0.86rem;
+}
+
+.badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.fantasy-badge {
+  border: 1px solid rgba(213, 162, 76, 0.22);
+  border-radius: 999px;
+  padding: 5px 9px;
+  background: rgba(213, 162, 76, 0.1);
+  color: #e7c886;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.turn-card {
+  border-color: rgba(213, 162, 76, 0.5);
+  background: linear-gradient(135deg, rgba(213, 162, 76, 0.18), rgba(123, 63, 47, 0.16));
+}
+
+.action-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 0 16px 22px;
+}
+
+ion-button.action-button {
+  --border-radius: 18px;
+  min-height: 52px;
+  font-weight: 800;
+}
