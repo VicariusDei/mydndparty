@@ -40,6 +40,7 @@ const router = useRouter();
 
 const entries = [
   { title: 'Dashboard', description: 'Riepilogo reale di campagna, party, inventario e combattimento.', to: '/tabs/dashboard' },
+  { title: 'Campagne', description: 'Elenco campagne, attivazione e diario master.', to: '/tabs/campaigns' },
   { title: 'Party', description: 'Personaggi migrati da compagnia e nuovi personaggi.', to: '/tabs/party' },
   { title: 'Inventario', description: 'Oggetti, categorie, quantità, valore e identificazione.', to: '/tabs/inventory' },
   { title: 'Combattimento', description: 'Encounter e iniziativa migrati dalle pagine legacy.', to: '/tabs/combat' },
