@@ -1,10 +1,15 @@
+# Configurazioni locali
 legacy/original-php/dbConfig.php
 .env
 *.local.php
-*.log
+
+# OS / editor
 .DS_Store
 Thumbs.db
 .vscode/
 .idea/
+
+# Log / cache
+*.log
 cache/
 tmp/
