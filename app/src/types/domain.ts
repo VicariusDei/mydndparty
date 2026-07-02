@@ -1,3 +1,12 @@
+export type User = {
+  id: number;
+  username: string;
+  email: string;
+  display_name: string;
+  avatar_url: string | null;
+  is_admin: boolean;
+};
+
 export type Campaign = {
   id: number;
   name: string;
