@@ -1,7 +1,8 @@
 -- MyDndParty nuovo schema iniziale
 -- Target: MySQL / MariaDB compatibile Aruba
+-- Convenzione: tutte le tabelle della nuova app usano prefisso mdp_
 
-CREATE TABLE users (
+CREATE TABLE mdp_users (
   id INT AUTO_INCREMENT PRIMARY KEY,
   username VARCHAR(80) NOT NULL UNIQUE,
   email VARCHAR(190) NOT NULL UNIQUE,
@@ -12,7 +13,7 @@ CREATE TABLE users (
   updated_at DATETIME NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE campaigns (
+CREATE TABLE mdp_campaigns (
   id INT AUTO_INCREMENT PRIMARY KEY,
   owner_user_id INT NOT NULL,
   name VARCHAR(120) NOT NULL,
@@ -20,10 +21,10 @@ CREATE TABLE campaigns (
   is_active TINYINT(1) NOT NULL DEFAULT 0,
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME NULL,
-  CONSTRAINT fk_campaigns_owner FOREIGN KEY (owner_user_id) REFERENCES users(id)
+  CONSTRAINT fk_mdp_campaigns_owner FOREIGN KEY (owner_user_id) REFERENCES mdp_users(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE party_members (
+CREATE TABLE mdp_party_members (
   id INT AUTO_INCREMENT PRIMARY KEY,
   campaign_id INT NOT NULL,
   user_id INT NOT NULL,
@@ -35,11 +36,11 @@ CREATE TABLE party_members (
   initiative_bonus INT NOT NULL DEFAULT 0,
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME NULL,
-  CONSTRAINT fk_party_campaign FOREIGN KEY (campaign_id) REFERENCES campaigns(id),
-  CONSTRAINT fk_party_user FOREIGN KEY (user_id) REFERENCES users(id)
+  CONSTRAINT fk_mdp_party_campaign FOREIGN KEY (campaign_id) REFERENCES mdp_campaigns(id),
+  CONSTRAINT fk_mdp_party_user FOREIGN KEY (user_id) REFERENCES mdp_users(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE inventory_items (
+CREATE TABLE mdp_inventory_items (
   id INT AUTO_INCREMENT PRIMARY KEY,
   campaign_id INT NOT NULL,
   owner_party_member_id INT NULL,
@@ -51,11 +52,11 @@ CREATE TABLE inventory_items (
   notes TEXT NULL,
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME NULL,
-  CONSTRAINT fk_inventory_campaign FOREIGN KEY (campaign_id) REFERENCES campaigns(id),
-  CONSTRAINT fk_inventory_owner FOREIGN KEY (owner_party_member_id) REFERENCES party_members(id)
+  CONSTRAINT fk_mdp_inventory_campaign FOREIGN KEY (campaign_id) REFERENCES mdp_campaigns(id),
+  CONSTRAINT fk_mdp_inventory_owner FOREIGN KEY (owner_party_member_id) REFERENCES mdp_party_members(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE coin_types (
+CREATE TABLE mdp_coin_types (
   id INT AUTO_INCREMENT PRIMARY KEY,
   code VARCHAR(10) NOT NULL UNIQUE,
   name VARCHAR(80) NOT NULL,
@@ -63,19 +64,19 @@ CREATE TABLE coin_types (
   weight_value DECIMAL(10,4) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE wallets (
+CREATE TABLE mdp_wallets (
   id INT AUTO_INCREMENT PRIMARY KEY,
   campaign_id INT NOT NULL,
   party_member_id INT NULL,
   coin_type_id INT NOT NULL,
   quantity INT NOT NULL DEFAULT 0,
   deposit_quantity INT NOT NULL DEFAULT 0,
-  CONSTRAINT fk_wallet_campaign FOREIGN KEY (campaign_id) REFERENCES campaigns(id),
-  CONSTRAINT fk_wallet_member FOREIGN KEY (party_member_id) REFERENCES party_members(id),
-  CONSTRAINT fk_wallet_coin FOREIGN KEY (coin_type_id) REFERENCES coin_types(id)
+  CONSTRAINT fk_mdp_wallet_campaign FOREIGN KEY (campaign_id) REFERENCES mdp_campaigns(id),
+  CONSTRAINT fk_mdp_wallet_member FOREIGN KEY (party_member_id) REFERENCES mdp_party_members(id),
+  CONSTRAINT fk_mdp_wallet_coin FOREIGN KEY (coin_type_id) REFERENCES mdp_coin_types(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE encounters (
+CREATE TABLE mdp_encounters (
   id INT AUTO_INCREMENT PRIMARY KEY,
   campaign_id INT NOT NULL,
   name VARCHAR(160) NOT NULL,
@@ -83,10 +84,10 @@ CREATE TABLE encounters (
   is_active TINYINT(1) NOT NULL DEFAULT 1,
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME NULL,
-  CONSTRAINT fk_encounter_campaign FOREIGN KEY (campaign_id) REFERENCES campaigns(id)
+  CONSTRAINT fk_mdp_encounter_campaign FOREIGN KEY (campaign_id) REFERENCES mdp_campaigns(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE combatants (
+CREATE TABLE mdp_combatants (
   id INT AUTO_INCREMENT PRIMARY KEY,
   encounter_id INT NOT NULL,
   party_member_id INT NULL,
@@ -97,21 +98,21 @@ CREATE TABLE combatants (
   is_slow TINYINT(1) NOT NULL DEFAULT 0,
   has_acted TINYINT(1) NOT NULL DEFAULT 0,
   sort_order INT NOT NULL DEFAULT 0,
-  CONSTRAINT fk_combatant_encounter FOREIGN KEY (encounter_id) REFERENCES encounters(id),
-  CONSTRAINT fk_combatant_party FOREIGN KEY (party_member_id) REFERENCES party_members(id)
+  CONSTRAINT fk_mdp_combatant_encounter FOREIGN KEY (encounter_id) REFERENCES mdp_encounters(id),
+  CONSTRAINT fk_mdp_combatant_party FOREIGN KEY (party_member_id) REFERENCES mdp_party_members(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE effects (
+CREATE TABLE mdp_effects (
   id INT AUTO_INCREMENT PRIMARY KEY,
   combatant_id INT NOT NULL,
   name VARCHAR(120) NOT NULL,
   remaining_rounds INT NOT NULL DEFAULT 0,
   is_permanent TINYINT(1) NOT NULL DEFAULT 0,
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT fk_effect_combatant FOREIGN KEY (combatant_id) REFERENCES combatants(id)
+  CONSTRAINT fk_mdp_effect_combatant FOREIGN KEY (combatant_id) REFERENCES mdp_combatants(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO coin_types (code, name, gold_value, weight_value) VALUES
+INSERT INTO mdp_coin_types (code, name, gold_value, weight_value) VALUES
 ('MR', 'Rame', 0.01, 0.02),
 ('MA', 'Argento', 0.10, 0.02),
 ('MO', 'Oro', 1.00, 0.02),
