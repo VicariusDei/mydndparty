@@ -32,7 +32,7 @@ final class CombatController
             $name = 'Nuovo combattimento';
         }
 
-        $this->combat->createEncounter($campaignId, mb_substr($name, 0, 160));
+        $this->combat->createEncounter($campaignId, $this->clip($name, 160));
         $this->respondWithState($campaignId);
     }
 
@@ -77,7 +77,7 @@ final class CombatController
 
         $this->combat->addCombatant(
             (int)$encounter['id'],
-            mb_substr($name, 0, 160),
+            $this->clip($name, 160),
             $type,
             (int)($body['initiative'] ?? 0),
             (int)($body['initiative_bonus'] ?? 0),
@@ -116,7 +116,7 @@ final class CombatController
         $this->combat->addEffect(
             $combatantId,
             (int)$encounter['id'],
-            mb_substr($name, 0, 120),
+            $this->clip($name, 120),
             (int)($body['remaining_rounds'] ?? 0),
             !empty($body['is_permanent'])
         );
@@ -186,5 +186,14 @@ final class CombatController
             'combatants' => [],
             'encounters' => [],
         ]);
+    }
+
+    private function clip(string $value, int $length): string
+    {
+        if (function_exists('mb_substr')) {
+            return mb_substr($value, 0, $length, 'UTF-8');
+        }
+
+        return substr($value, 0, $length);
     }
 }
