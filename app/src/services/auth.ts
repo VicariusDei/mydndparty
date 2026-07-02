@@ -1,4 +1,4 @@
-import { apiGet, apiPost, type ApiResponse } from './api';
+import { apiGet, apiPost, apiUrl, type ApiResponse } from './api';
 import type { User } from '../types/domain';
 
 export type AuthPayload = {
@@ -30,5 +30,5 @@ export function logout(): Promise<ApiResponse<Record<string, never>>> {
 }
 
 export function googleLoginUrl(): string {
-  return '/api/index.php?route=auth/google/start';
+  return apiUrl('auth/google/start');
 }
