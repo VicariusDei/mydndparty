@@ -51,14 +51,19 @@ async function submitRegister() {
   error.value = '';
   loading.value = true;
 
-  const response = await register(form);
-  loading.value = false;
+  try {
+    const response = await register({ ...form });
 
-  if (!response.ok) {
-    error.value = response.error || 'Registrazione non riuscita';
-    return;
+    if (!response.ok) {
+      error.value = response.error || 'Registrazione non riuscita';
+      return;
+    }
+
+    await router.replace('/tabs/dashboard');
+  } catch (err) {
+    error.value = err instanceof Error ? err.message : 'Errore imprevisto durante la registrazione.';
+  } finally {
+    loading.value = false;
   }
-
-  router.replace('/tabs/dashboard');
 }
 </script>
