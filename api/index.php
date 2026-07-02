@@ -106,6 +106,15 @@ try {
         case 'campaigns/create':
             $campaignController->create();
             break;
+        case 'campaigns/update':
+            $campaignController->update();
+            break;
+        case 'campaigns/activate':
+            $campaignController->activate();
+            break;
+        case 'campaigns/delete':
+            $campaignController->delete();
+            break;
         case 'party/list':
             $partyController->list();
             break;
