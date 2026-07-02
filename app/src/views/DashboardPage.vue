@@ -58,6 +58,7 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { IonButton, IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
 import { apiGet } from '../services/api';
 import type { Campaign, PartyMember } from '../types/domain';
@@ -70,6 +71,7 @@ type PartyPayload = {
   party_members: PartyMember[];
 };
 
+const router = useRouter();
 const campaign = ref<Campaign | null>(null);
 const partyMembers = ref<PartyMember[]>([]);
 
@@ -78,12 +80,22 @@ const campaignSubtitle = computed(() => campaign.value?.notes || 'Crea o attiva 
 
 onMounted(async () => {
   const campaignResponse = await apiGet<ActiveCampaignPayload>('campaigns/active');
-  if (campaignResponse.ok && campaignResponse.data?.campaign) {
+  if (!campaignResponse.ok) {
+    router.replace('/login');
+    return;
+  }
+
+  if (campaignResponse.data?.campaign) {
     campaign.value = campaignResponse.data.campaign;
   }
 
   const partyResponse = await apiGet<PartyPayload>('party/list');
-  if (partyResponse.ok && partyResponse.data?.party_members) {
+  if (!partyResponse.ok) {
+    router.replace('/login');
+    return;
+  }
+
+  if (partyResponse.data?.party_members) {
     partyMembers.value = partyResponse.data.party_members;
   }
 });
