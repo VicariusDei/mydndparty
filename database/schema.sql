@@ -6,11 +6,45 @@ CREATE TABLE mdp_users (
   id INT AUTO_INCREMENT PRIMARY KEY,
   username VARCHAR(80) NOT NULL UNIQUE,
   email VARCHAR(190) NOT NULL UNIQUE,
-  password_hash VARCHAR(255) NOT NULL,
+  password_hash VARCHAR(255) NULL,
+  display_name VARCHAR(160) NULL,
+  avatar_url VARCHAR(500) NULL,
+  google_id VARCHAR(80) NULL UNIQUE,
   is_active TINYINT(1) NOT NULL DEFAULT 0,
   is_admin TINYINT(1) NOT NULL DEFAULT 0,
+  email_verified_at DATETIME NULL,
+  last_login_at DATETIME NULL,
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updated_at DATETIME NULL
+  updated_at DATETIME NULL,
+  INDEX idx_mdp_users_email (email),
+  INDEX idx_mdp_users_google_id (google_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE mdp_remember_tokens (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  selector VARCHAR(64) NOT NULL UNIQUE,
+  token_hash CHAR(64) NOT NULL,
+  expires_at DATETIME NOT NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  last_used_at DATETIME NULL,
+  user_agent VARCHAR(255) NULL,
+  ip_address VARCHAR(45) NULL,
+  CONSTRAINT fk_mdp_remember_user FOREIGN KEY (user_id) REFERENCES mdp_users(id) ON DELETE CASCADE,
+  INDEX idx_mdp_remember_selector (selector),
+  INDEX idx_mdp_remember_expires (expires_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE mdp_password_reset_tokens (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  token_hash CHAR(64) NOT NULL,
+  expires_at DATETIME NOT NULL,
+  used_at DATETIME NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_mdp_reset_user FOREIGN KEY (user_id) REFERENCES mdp_users(id) ON DELETE CASCADE,
+  INDEX idx_mdp_reset_token_hash (token_hash),
+  INDEX idx_mdp_reset_expires (expires_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE mdp_campaigns (
