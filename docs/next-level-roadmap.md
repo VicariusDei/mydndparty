@@ -14,6 +14,11 @@ La dashboard e i menu non devono mostrare dati fittizi. Ogni sezione deve rispet
 
 - Login e sessione utente.
 - Campagna attiva.
+- Elenco campagne tramite `campaigns/list`.
+- Creazione campagna tramite `campaigns/create`.
+- Modifica nome e diario tramite `campaigns/update`.
+- Attivazione campagna tramite `campaigns/activate`.
+- Eliminazione sicura campagna vuota tramite `campaigns/delete`.
 - Party / personaggi da `mdp_party_members`.
 - Inventario da `mdp_inventory_items`.
 - CRUD oggetti tramite `inventory/create`, `inventory/update`, `inventory/delete`.
@@ -29,10 +34,32 @@ La dashboard e i menu non devono mostrare dati fittizi. Ogni sezione deve rispet
 - Richieste amicizia.
 - Ricerca globale.
 - Dado rapido.
-- Diario campagna strutturato.
+- Diario campagna strutturato per eventi separati.
 - Impostazioni da `cfgSistema`, `cfgLingua`, `cfgUtenti`.
 
-## Migrazione legacy completata parzialmente
+## Migrazione legacy portata
+
+### Campagne / diario
+
+Origine legacy:
+
+- `carica_gruppi.php`
+- `gruppi`
+
+Portato nella nuova app:
+
+- elenco campagne;
+- creazione campagna;
+- attivazione campagna;
+- modifica nome campagna;
+- modifica note/diario master;
+- eliminazione solo se la campagna è vuota, per evitare perdita involontaria di party, inventario, monete o combattimenti.
+
+Da rifinire:
+
+- storico eventi strutturato;
+- separazione note master / diario pubblico;
+- permessi collaborativi su campagna.
 
 ### Combattimento / iniziativa
 
@@ -90,19 +117,22 @@ Da rifinire:
 
 ## Prossime priorità
 
-### 1. Campagne / diario
+### 1. Party / personaggi completo
 
 Origine legacy:
 
-- `carica_gruppi.php`
-- `gruppi`
+- `carica_compagnia.php`
+- `compagnia`
+- `classi`
+- `razze`
 
 Obiettivo nuova app:
 
-- selezione campagna attiva;
-- modifica diario campagna;
-- note master;
-- storico eventi reali.
+- modifica personaggio;
+- eliminazione controllata;
+- selezione classe/razza da tabelle reali;
+- gestione bonus iniziativa;
+- associazione utente/personaggio.
 
 ### 2. Social minimo
 
