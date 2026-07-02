@@ -7,9 +7,7 @@ ALTER TABLE mdp_users
   ADD COLUMN avatar_url VARCHAR(500) NULL AFTER display_name,
   ADD COLUMN google_id VARCHAR(80) NULL UNIQUE AFTER avatar_url,
   ADD COLUMN email_verified_at DATETIME NULL AFTER is_admin,
-  ADD COLUMN last_login_at DATETIME NULL AFTER email_verified_at,
-  ADD INDEX idx_mdp_users_email (email),
-  ADD INDEX idx_mdp_users_google_id (google_id);
+  ADD COLUMN last_login_at DATETIME NULL AFTER email_verified_at;
 
 CREATE TABLE IF NOT EXISTS mdp_remember_tokens (
   id INT AUTO_INCREMENT PRIMARY KEY,
