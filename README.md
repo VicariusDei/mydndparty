@@ -16,7 +16,7 @@ Il legacy resta disponibile come reference funzionale, ma la nuova app nasce con
 
 ```text
 app/          sorgente frontend Ionic Vue
-a pi/         backend PHP JSON API senza dipendenze server
+api/          backend PHP JSON API senza dipendenze server
 database/     schema nuova app
 docs/         architettura, deploy e analisi
 legacy/       vecchio progetto solo come riferimento
