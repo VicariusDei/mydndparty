@@ -1,0 +1,10 @@
+legacy/original-php/dbConfig.php
+.env
+*.local.php
+*.log
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+cache/
+tmp/
