@@ -134,6 +134,38 @@ try {
             $combatController->active();
             break;
 
+        case 'combat/create':
+            $combatController->create();
+            break;
+
+        case 'combat/activate':
+            $combatController->activate();
+            break;
+
+        case 'combat/add-party-member':
+            $combatController->addPartyMember();
+            break;
+
+        case 'combat/add-combatant':
+            $combatController->addCombatant();
+            break;
+
+        case 'combat/next-turn':
+            $combatController->nextTurn();
+            break;
+
+        case 'combat/new-round':
+            $combatController->newRound();
+            break;
+
+        case 'combat/effect/add':
+            $combatController->addEffect();
+            break;
+
+        case 'combat/effect/remove':
+            $combatController->removeEffect();
+            break;
+
         default:
             Response::error('Route non trovata: ' . $route, 404);
     }
