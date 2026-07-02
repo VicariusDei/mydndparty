@@ -104,7 +104,7 @@ final class CampaignController
         ]);
     }
 
-    private function notes(mixed $value): ?string
+    private function notes($value): ?string
     {
         $notes = trim((string)($value ?? ''));
         return $notes === '' ? null : $notes;
