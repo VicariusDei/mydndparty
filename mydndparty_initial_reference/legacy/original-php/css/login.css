@@ -1,0 +1,120 @@
+/* Importazione del font Open Sans */
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700');
+
+/* Altre regole CSS qui */
+
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+	font-size: 20px;
+}
+
+.container {
+    display: flex;
+    /* Default to row for larger screens */
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh; /* Changed to min-height for better flexibility */
+    padding: 20px; /* Added padding */
+}
+
+.logo {
+    max-width: 200px; /* Imposta la larghezza massima del logo */
+    margin-bottom: 20px; /* Aggiungi spazio sotto il logo */
+}
+
+.login-form {
+    /*margin: 50px auto;*/
+	margin: 20px;
+    padding: 20px;
+    width: 30%;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+}
+
+#login-title {
+    color: #333;
+}
+
+.input-field {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.login-button {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.login-button:hover {
+    background-color: #45a049;
+}
+
+.registrati-button {
+    display: block;
+    margin-top: 5px;
+    text-decoration: none;
+    color: #333;
+}
+
+.registrati-button:hover {
+    color: #4caf50;
+}
+
+
+.recupero-button {
+    display: block;
+    margin-top: 5px;
+    text-decoration: none;
+    color: #333;
+}
+
+.recupero-button:hover {
+    color: #4caf50;
+}
+
+.logout{
+	font-size: 15px;
+	font-style: italic;
+}
+
+ 
+
+/* Media Query for Tablets in Portrait and Smaller Screens */
+@media (max-width: 768px), (orientation: portrait) {
+    .container {
+        flex-direction: column;
+		font-size: 20px;
+    }
+
+    .login-form {
+        width: 90%; /* More flexible width on smaller screens */
+    }
+}
+
+/* Additional Responsiveness for smaller mobile screens */
+@media (max-width: 400px) {
+    body {
+        font-size: 20px; /* Adjust font size for very small screens */
+    }
+
+    .login-form {
+        width: 95%; /* Maximum width for very small screens */
+    }
+}
+
+

@@ -1,0 +1,651 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700');
+
+/*
+colori sistema
+Grigio #555
+Arancio #ffb701
+Blu Link #007bff
+*/
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+
+a {
+    color: #007bff; /* Colore del testo del link */
+    text-decoration: none; /* Rimuove il sottolineato */
+    background-color: transparent; /* Sfondo trasparente */
+}
+
+a:hover {
+    color: #0056b3; /* Colore del link quando il mouse passa sopra */
+    text-decoration: underline; /* Sottolinea il link al passaggio del mouse */
+}
+
+a:active {
+    color: #004085; /* Colore del link quando viene cliccato */
+}
+
+a:focus {
+    outline: none; /* Rimuove il contorno al focus */
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Aggiunge un effetto shadow quando il link è in focus */
+}
+
+.max-width-2 {
+    max-width: 2em; 
+}
+
+.max-width-30 {
+    max-width: 30em; 
+}
+
+
+.rounded-background {
+    border-radius: 10px; /* Imposta il raggio del bordo per ottenere un aspetto arrotondato */
+    background-color: #f0f0f0; /* Cambia il colore di sfondo come preferisci */
+    padding: 10px; /* Aggiungi spaziatura interna per migliorare l'aspetto */
+}
+
+table {
+    width: 95%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+th, td {
+    padding:        8px;
+    text-align:     center;
+    white-space:    nowrap; /* Evita il wrapping del testo */
+    width:          auto; /* Larghezza automatica in base al contenuto */
+}
+ 
+
+thead {
+    background-color: #333;
+    color: #fff;
+}
+
+
+tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.icon {
+	width: 20px; /* Imposta la larghezza desiderata per l'immagine */
+    height: auto; /* L'altezza si adatterà automaticamente alla larghezza */
+    vertical-align: middle; /* Allinea verticalmente l'immagine al centro della cella */
+}
+
+    /* Stile per l'input */
+.personaggio input {
+    /*width: 50%; calc(100% - 40px);  Sottrai la larghezza dell'immagine per adattare l'input */
+	vertical-align: middle;
+	
+}
+
+.hidden-checkbox {
+    display: none; /* Nasconde la checkbox */
+}
+
+.label-selezionata {
+    /* Aggiungi qui i tuoi stili per la label selezionata */
+    background-color: #0056b3; /* esempio di colore di sfondo */
+    /*border: 1px solid #000;  esempio di bordo */
+}
+
+/* Stile per controllare la larghezza massima degli input, select e textarea */
+table input[type="text"],
+table input[type="email"],
+table input[type="number"],
+table select,
+table textarea {
+    width: 70%;
+    box-sizing: border-box; /* Assicura che il padding e il bordo non aumentino la larghezza */
+}
+
+
+input[type="text"], table input[type="email"], input[type="number"], textarea {
+    padding: 5px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 100%;
+}
+
+button, input[type="submit"] {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+}
+
+button:hover, input[type="submit"]:hover {
+    background-color: #555;
+}
+
+.button-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.button-container a {
+    text-decoration: none;
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.button-container a:hover {
+    background-color: #555;
+}
+
+#note {
+    font-style: italic;
+}
+
+.graphic-element {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    background-color: #0099cc;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.loading-gif {
+    width: 16px; /* Sostituisci con la larghezza desiderata */
+    height: 16px; /* Sostituisci con l'altezza desiderata */
+}
+
+
+
+
+
+
+/* --------------------- SPLASH SCREEN --------------------- */
+#splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.8); /* Sfondo semitrasparente */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Posizionato sopra gli altri elementi */
+}
+
+#splash-screen img {
+    width: 30%; /* Larghezza dell'immagine di caricamento */
+}
+
+/*
+#ff7b00
+#6E58FF
+*/
+
+#category-filter{
+    background-color: #ff7b00;
+    color: #fff;
+    padding: 5px;
+}
+
+/* Stile delle combobox */
+select {
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff; /* Colore di sfondo */
+    color: #333; /* Colore del testo */
+}
+
+select option {
+    background-color: #fff;
+    color: #333;
+}
+
+
+label {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: #ff7b00; 
+    color: #000; 
+    border: 1px solid #000; /* Bordo nero */
+    border-radius: 5px;
+    margin-right: 10px; /* Margine tra le label */
+}
+
+input[type="checkbox"] {
+    width: 20px; /* Larghezza personalizzata per il quadrato della checkbox */
+    height: 20px; /* Altezza personalizzata per il quadrato della checkbox */
+}
+
+input[type="checkbox"]:checked + label {
+    background-color: #ff7b00; /* Sfondo più scuro per le checkbox selezionate */
+}
+
+.table-container {
+    display: flex;
+    overflow: auto;
+    white-space: nowrap;
+    border: 1px solid transparent; /* Rimuove i bordi */
+	align-items: center;
+	justify-content: center;
+}
+
+.table-cell {
+    margin: 0;
+}
+
+    /* Stile delle checkbox */
+.table-cell input[type="checkbox"] {
+    margin-right: 10px; /* Spazio tra le checkbox */
+}
+
+
+.pure-material-switch {
+    z-index: 0;
+    position: relative;
+    display: inline-block;
+    color: rgba(var(--pure-material-onsurface-rgb, 0, 0, 0), 0.87);
+    font-family: var(--pure-material-font, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+/* Input */
+.pure-material-switch > input {
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    z-index: -1;
+    position: absolute;
+    right: 6px;
+    top: -8px;
+    display: block;
+    margin: 0;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    background-color: rgba(var(--pure-material-onsurface-rgb, 0, 0, 0), 0.38);
+    outline: none;
+    opacity: 0;
+    transform: scale(1);
+    pointer-events: none;
+    transition: opacity 0.3s 0.1s, transform 0.2s 0.1s;
+}
+
+/* Span */
+.pure-material-switch > span {
+    display: inline-block;
+    width: 100%;
+    cursor: pointer;
+}
+
+/* Track */
+.pure-material-switch > span::before {
+    content: "";
+    float: right;
+    display: inline-block;
+    margin: 5px 0 5px 0px;
+    border-radius: 7px;
+    width: 36px;
+    height: 14px;
+    background-color: rgba(var(--pure-material-onsurface-rgb, 0, 0, 0), 0.38);
+    vertical-align: top;
+    transition: background-color 0.2s, opacity 0.2s;
+}
+
+/* Thumb */
+.pure-material-switch > span::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    right: 16px;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    background-color: rgb(var(--pure-material-onprimary-rgb, 255, 255, 255));
+    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+/* Checked */
+.pure-material-switch > input:checked {
+    right: -10px;
+    background-color: rgb(var(--pure-material-primary-rgb, 33, 150, 243));
+}
+
+.pure-material-switch > input:checked + span::before {
+    background-color: rgba(var(--pure-material-primary-rgb, 33, 150, 243), 0.6);
+}
+
+.pure-material-switch > input:checked + span::after {
+    background-color: rgb(var(--pure-material-primary-rgb, 33, 150, 243));
+    transform: translateX(16px);
+}
+
+/* Hover, Focus */
+.pure-material-switch:hover > input {
+    opacity: 0.04;
+}
+
+.pure-material-switch > input:focus {
+    opacity: 0.12;
+}
+
+.pure-material-switch:hover > input:focus {
+    opacity: 0.16;
+}
+
+/* Active */
+.pure-material-switch > input:active {
+    opacity: 1;
+    transform: scale(0);
+    transition: transform 0s, opacity 0s;
+}
+
+.pure-material-switch > input:active + span::before {
+    background-color: rgba(var(--pure-material-primary-rgb, 33, 150, 243), 0.6);
+}
+
+.pure-material-switch > input:checked:active + span::before {
+    background-color: rgba(var(--pure-material-onsurface-rgb, 0, 0, 0), 0.38);
+}
+
+/* Disabled */
+.pure-material-switch > input:disabled {
+    opacity: 0;
+}
+
+.pure-material-switch > input:disabled + span {
+    color: rgb(var(--pure-material-onsurface-rgb, 0, 0, 0));
+    opacity: 0.38;
+    cursor: default;
+}
+
+.pure-material-switch > input:disabled + span::before {
+    background-color: rgba(var(--pure-material-onsurface-rgb, 0, 0, 0), 0.38);
+}
+
+.pure-material-switch > input:checked:disabled + span::before {
+    background-color: rgba(var(--pure-material-primary-rgb, 33, 150, 243), 0.6);
+}
+
+
+#fixed-button {
+        position: fixed;
+        bottom: 20px; /* Regola questa proprietà per il posizionamento verticale desiderato */
+        right: 20px; /* Regola questa proprietà per il posizionamento orizzontale desiderato */
+        z-index: 999; /* Assicura che il pulsante sia sovrapposto al resto del contenuto */
+    }
+
+.button-with-image img.bottone {
+    width: 40px; /* Larghezza desiderata */
+    height: 40px; /* Altezza desiderata */
+    /*margin-right: 5px; /* Margine tra l'immagine e il testo (se presente) */
+}
+.button-with-image-nuovo-oggetto {
+    background-image: url("/img/newOggetto.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 50px; /* Larghezza desiderata */
+    height: 50px; /* Altezza desiderata */
+}
+
+
+.button-with-image-nuovo-personaggio {
+    background-image: url("/img/aggiungiPersonaggio.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 50px; /* Larghezza desiderata */
+    height: 50px; /* Altezza desiderata */
+}
+
+.button-with-image-nuovo-gruppo {
+    background-image: url("/img/aggiungiGruppo.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 50px; /* Larghezza desiderata */
+    height: 50px; /* Altezza desiderata */
+}
+.button-with-image-carica-template{
+    background-image: url("/img/caricaTemplateMonete.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 50px; /* Larghezza desiderata */
+    height: 50px; /* Altezza desiderata */
+}
+
+.button-with-image-effetto{
+    background-image: url("/img/effetto.png");
+    background-size: 26px 26px;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 30px; /* Larghezza desiderata */
+    height: 30px; /* Altezza desiderata */
+}
+
+.button-with-image-aggiungi{
+    background-image: url("/img/aggiungi.png");
+    background-size: 20px 20px;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 25px; /* Larghezza desiderata */
+    height: 25px; /* Altezza desiderata */
+}
+
+.button-with-image-sottrai{
+    background-image: url("/img/sottrai.png");
+    background-size: 20px 20px;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 25px; /* Larghezza desiderata */
+    height: 25px; /* Altezza desiderata */
+}
+
+.btn{
+    width: 25px; /* O la larghezza dell'immagine */
+    height: 25px; /* O l'altezza dell'immagine */
+	padding: 2px;
+	margin: 2px;
+    border: thin;
+    cursor: pointer;
+    background-size: cover;
+    background-color: transparent;
+}
+.btn-modifica{
+    background-image: url("../img/iconaModifica.png"); /* Percorso dell'immagine per Modifica */
+}
+.btn-salva{
+    background-image: url("../img/iconaSalva.png"); /* Percorso dell'immagine per Modifica */
+}
+.btn-annulla-salva{
+    background-image: url("../img/iconaAnnulla.png"); /* Percorso dell'immagine per Modifica */
+}
+
+.btn:hover {
+    background-color: #ffb701;
+}
+
+
+img.icona {
+    width: 35px; /* Larghezza desiderata */
+    height: 35px; /* Altezza desiderata */
+    /*margin-right: 5px; /* Margine tra l'immagine e il testo (se presente) */
+}
+
+img.iconaMedia {
+    width: 50px; /* Larghezza desiderata */
+    height: 50px; /* Altezza desiderata */
+    /*margin-right: 5px; /* Margine tra l'immagine e il testo (se presente) */
+}
+
+.logo {
+    width: 100px; /* Larghezza desiderata */
+    height: 100px; /* Altezza desiderata */
+    border: 2px solid #ffb701; /* Colore e stile del bordo */
+    border-radius: 15%; /* Per rendere il bordo rotondo (effetto bordato carino) */
+    transition: border 0.3s ease-in-out; /* Transizione per un effetto di transizione fluido */
+}
+
+table td {
+    max-width: 100%;
+    overflow: hidden;
+    white-space: nowrap; /* Evita il wrapping del testo */
+}
+
+
+
+tr.attivo {
+    background-color: #FFFF00; /* Cambia il colore di sfondo a tuo piacimento */
+    font-weight: bold; /* Rende il testo in grassetto */
+}
+
+
+/* CSS per il menu a scomparsa */
+.lateral-menu-tab {
+  position: fixed;
+  top: 0; /* Inizia dall'alto della pagina */
+  left: -300px; /* Inizialmente nascosto a sinistra */
+  width: 300px; /* Larghezza del menu a scomparsa */
+  height: 100%; /* Il menu si estende per l'intera altezza */
+  background: #333; /* Sfondo scuro per il menu */
+  color: white; /* Colore del testo bianco */
+  transition: left 0.3s; /* Animazione di transizione fluida */
+  z-index: 1001; /* Assicurati che sia sopra gli altri elementi */
+}
+
+.tab-button-menu {
+  /*background-color: #333;
+  color: #fff;*/
+  padding: 10px;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+/* Classe per mostrare il menu */
+.menu-open {
+  left: 0; /* Porta il menu a scomparsa in vista */
+}
+
+#menuIconLateral {
+  width: 30px; /* Larghezza fissa per l'icona del menu */
+  flex-shrink: 0; /* Impedisce all'icona del menu di restringersi */
+}
+
+
+#menuLogoLateral {
+  flex-grow: 1; /* Permette al logo di crescere e riempire lo spazio disponibile */
+  height: auto; /* Mantiene il rapporto aspetto dell'immagine */
+  max-width: calc(100% - 60px); /* Calcola lo spazio disponibile sottraendo la larghezza dell'icona del menu e del padding */
+}
+
+
+.tab-content-menu > div {
+  display: flex; /* Usa Flexbox */
+  align-items: center; /* Centra gli elementi verticalmente */
+  justify-content: flex-start; /* Allinea gli elementi all'inizio */
+}
+
+.table-sfumata {
+    width: auto; /* o qualsiasi larghezza desideri */
+    border-collapse: collapse; /* per rimuovere lo spazio tra le celle */
+    background-color: white; /* sfondo bianco per la tabella */
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* ombra sfumata per il bordo */
+    margin: 20px 0; /* margine opzionale intorno alla tabella */
+}
+
+.table-sfumata th, .table-sfumata td {
+    border: 0px solid #ddd; /* bordo sottile per le celle */
+    padding: 8px; /* padding interno per le celle */
+    text-align: center; /* allineamento del testo */
+}
+
+.table-sfumata th {
+    background-color: #f2f2f2; /* colore di sfondo per le intestazioni, se desiderato */
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
+
+
+.contenitoreDatiUtente {
+	padding-left: 30%;
+	padding-right: 30%;
+}	
+
+.user-header {
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+.user-detail {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 10px;
+}
+
+.user-detail span {
+	flex-grow: 1; /* Assicura che il testo occupi lo spazio disponibile */
+}
+
+
+
+/* Stile per la combobox all'interno del modal */
+.modal-combobox {
+    display: block;        /* rende la combobox visibile */
+    padding: 10px;         /* aggiunge un po' di spazio interno */
+    margin: 10px 0;        /* spazio sopra e sotto la combobox */
+    width: 100%;           /* occupa l'intera larghezza del contenitore */
+    border: 1px solid #ccc;/* bordo sottile per la combobox */
+    border-radius: 5px;    /* bordi arrotondati */
+    background-color: white;/* sfondo bianco per la combobox */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* leggera ombra per profondità */
+    font-size: 1rem;       /* dimensione del testo */
+    color: #333;           /* colore del testo */
+}
+
+.modal-combobox:focus {
+    border-color: #4a90e2; /* Cambia il colore del bordo quando è in focus */
+    outline: none;         /* Rimuove l'outline di default */
+}
+
+.modal-combobox:hover {
+    border-color: #888;    /* Cambia il colore del bordo al passaggio del mouse */
+}
+
+/* Se vuoi aggiungere uno stile per le opzioni all'interno della combobox */
+.modal-combobox option {
+    padding: 5px;          /* Spazio interno per ogni opzione */
+    background-color: #f8f8f8; /* Sfondo leggermente grigio per ogni opzione */
+}
+
+
+
