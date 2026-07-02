@@ -8,19 +8,19 @@
 
     <ion-content fullscreen class="app-page">
       <section class="hero-card">
-        <p class="hero-eyebrow">Strumenti del master</p>
-        <h1 class="hero-title">Controllo sessione</h1>
-        <p class="hero-subtitle">Accesso rapido a campagne, diario, impostazioni, monete e account.</p>
+        <p class="hero-eyebrow">Menu operativo</p>
+        <h1 class="hero-title">Sezioni reali</h1>
+        <p class="hero-subtitle">Le voci inattive restano visibili ma dichiarano lo stato reale del modulo.</p>
       </section>
 
       <section class="section-block">
         <div class="entity-list">
-          <article class="fantasy-card entity-card" v-for="entry in entries" :key="entry.title">
+          <router-link class="fantasy-card entity-card" v-for="entry in entries" :key="entry.title" :to="entry.to">
             <div>
               <p class="entity-name">{{ entry.title }}</p>
               <p class="entity-meta">{{ entry.description }}</p>
             </div>
-          </article>
+          </router-link>
         </div>
       </section>
 
@@ -39,10 +39,13 @@ import { logout } from '../services/auth';
 const router = useRouter();
 
 const entries = [
-  { title: 'Diario campagna', description: 'Appunti, scoperte, PNG e luoghi.' },
-  { title: 'Monete', description: 'Deposito, prelievo, peso e valore in oro.' },
-  { title: 'Impostazioni', description: 'Dado iniziativa, lingua e preferenze.' },
-  { title: 'Reference legacy', description: 'Funzioni recuperate dal vecchio progetto PHP.' }
+  { title: 'Dashboard', description: 'Riepilogo reale di campagna, party, inventario e combattimento.', to: '/tabs/dashboard' },
+  { title: 'Party', description: 'Personaggi migrati da compagnia e nuovi personaggi.', to: '/tabs/party' },
+  { title: 'Inventario', description: 'Oggetti, categorie, quantità, valore e identificazione.', to: '/tabs/inventory' },
+  { title: 'Combattimento', description: 'Encounter e iniziativa migrati dalle pagine legacy.', to: '/tabs/combat' },
+  { title: 'Messaggi', description: 'Modulo presente ma non ancora attivato: nessun dato fittizio.', to: '/tabs/more' },
+  { title: 'Richieste amicizia', description: 'Modulo presente ma non ancora attivato: nessuna richiesta fittizia.', to: '/tabs/more' },
+  { title: 'Impostazioni', description: 'Da collegare a cfgSistema, cfgLingua e preferenze utente.', to: '/tabs/more' }
 ];
 
 async function doLogout() {
