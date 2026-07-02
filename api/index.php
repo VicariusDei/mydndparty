@@ -22,6 +22,17 @@ $config = file_exists($configPath) ? require $configPath : require $exampleConfi
 $route = Request::route();
 
 try {
+    if ($route === 'health') {
+        Response::ok([
+            'app' => 'MyDndParty API',
+            'status' => 'ready',
+        ]);
+    }
+
+    if ($route === 'demo/dashboard') {
+        (new DemoController())->dashboard();
+    }
+
     $db = new Database($config);
     $pdo = $db->pdo();
 
@@ -31,17 +42,6 @@ try {
     $partyController = new PartyController($partyRepository, $campaignRepository, $config);
 
     switch ($route) {
-        case 'health':
-            Response::ok([
-                'app' => 'MyDndParty API',
-                'status' => 'ready',
-            ]);
-            break;
-
-        case 'demo/dashboard':
-            (new DemoController())->dashboard();
-            break;
-
         case 'campaigns/list':
             $campaignController->list();
             break;
