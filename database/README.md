@@ -5,6 +5,12 @@ Questa cartella contiene lo schema della nuova versione di MyDndParty.
 ## File principali
 
 - `schema.sql`: schema iniziale normalizzato, derivato dalle meccaniche legacy ma non dal dump grezzo.
+- `seeds/demo.sql`: dati demo per sviluppo locale e prime prove grafiche/API.
+
+## Ordine import locale
+
+1. Importare `schema.sql`.
+2. Importare `seeds/demo.sql`.
 
 ## Convenzione nomi
 
