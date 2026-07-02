@@ -7,7 +7,13 @@ session_start();
 require_once __DIR__ . '/core/Request.php';
 require_once __DIR__ . '/core/Response.php';
 require_once __DIR__ . '/core/Database.php';
+require_once __DIR__ . '/core/Auth.php';
+
 require_once __DIR__ . '/modules/Demo/DemoController.php';
+require_once __DIR__ . '/modules/Campaigns/CampaignRepository.php';
+require_once __DIR__ . '/modules/Campaigns/CampaignController.php';
+require_once __DIR__ . '/modules/Party/PartyRepository.php';
+require_once __DIR__ . '/modules/Party/PartyController.php';
 
 $configPath = __DIR__ . '/config/config.php';
 $exampleConfigPath = __DIR__ . '/config/config.example.php';
@@ -16,6 +22,14 @@ $config = file_exists($configPath) ? require $configPath : require $exampleConfi
 $route = Request::route();
 
 try {
+    $db = new Database($config);
+    $pdo = $db->pdo();
+
+    $campaignRepository = new CampaignRepository($pdo);
+    $campaignController = new CampaignController($campaignRepository, $config);
+    $partyRepository = new PartyRepository($pdo);
+    $partyController = new PartyController($partyRepository, $campaignRepository, $config);
+
     switch ($route) {
         case 'health':
             Response::ok([
@@ -26,6 +40,26 @@ try {
 
         case 'demo/dashboard':
             (new DemoController())->dashboard();
+            break;
+
+        case 'campaigns/list':
+            $campaignController->list();
+            break;
+
+        case 'campaigns/active':
+            $campaignController->active();
+            break;
+
+        case 'campaigns/create':
+            $campaignController->create();
+            break;
+
+        case 'party/list':
+            $partyController->list();
+            break;
+
+        case 'party/create':
+            $partyController->create();
             break;
 
         default:
