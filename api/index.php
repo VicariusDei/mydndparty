@@ -12,10 +12,10 @@ require_once __DIR__ . '/core/Database.php';
 require_once __DIR__ . '/core/Security.php';
 require_once __DIR__ . '/core/Mailer.php';
 require_once __DIR__ . '/core/HttpClient.php';
-require_once __DIR__ . '/core/Auth.php';
 
 require_once __DIR__ . '/modules/Demo/DemoController.php';
 require_once __DIR__ . '/modules/Auth/AuthRepository.php';
+require_once __DIR__ . '/core/Auth.php';
 require_once __DIR__ . '/modules/Auth/AuthController.php';
 require_once __DIR__ . '/modules/Auth/GoogleAuthController.php';
 require_once __DIR__ . '/modules/Campaigns/CampaignRepository.php';
