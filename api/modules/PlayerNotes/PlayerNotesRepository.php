@@ -14,6 +14,7 @@ final class PlayerNotesRepository
                     n.origin_channel, n.note_type, n.title, n.content, n.share_scope, n.status, n.master_flag,
                     n.corrected_by_user_id, n.corrected_at, n.converted_target_type, n.converted_target_id,
                     n.created_at, n.updated_at,
+                    s.session_number, s.title AS session_title,
                     u.display_name AS author_display_name,
                     u.username AS author_username,
                     pm.character_name AS author_character_name,
@@ -21,6 +22,7 @@ final class PlayerNotesRepository
                     cu.display_name AS corrected_by_display_name,
                     cu.username AS corrected_by_username
              FROM mdp_player_notes n
+             LEFT JOIN mdp_sessions s ON s.id = n.session_id
              LEFT JOIN mdp_users u ON u.id = n.author_user_id
              LEFT JOIN mdp_party_members pm ON pm.id = n.author_party_member_id
              LEFT JOIN mdp_users cu ON cu.id = n.corrected_by_user_id
@@ -49,6 +51,7 @@ final class PlayerNotesRepository
         $shareScope = $this->shareScope((string)($data['share_scope'] ?? 'party'));
         $noteType = $this->noteType((string)($data['note_type'] ?? 'note'));
         $authorPartyMemberId = $this->partyMemberId($campaignId, (int)($data['author_party_member_id'] ?? 0));
+        $sessionId = $this->sessionId($campaignId, (int)($data['session_id'] ?? 0));
 
         $stmt = $this->pdo->prepare(
             "INSERT INTO mdp_player_notes
@@ -60,7 +63,7 @@ final class PlayerNotesRepository
         );
         $stmt->execute([
             'campaign_id' => $campaignId,
-            'session_id' => null,
+            'session_id' => $sessionId,
             'author_user_id' => $userId,
             'author_party_member_id' => $authorPartyMemberId,
             'author_label' => $this->nullableClip((string)($data['author_label'] ?? ''), 120),
@@ -89,7 +92,8 @@ final class PlayerNotesRepository
 
         $stmt = $this->pdo->prepare(
             'UPDATE mdp_player_notes
-             SET note_type = :note_type,
+             SET session_id = :session_id,
+                 note_type = :note_type,
                  title = :title,
                  content = :content,
                  share_scope = :share_scope,
@@ -101,6 +105,7 @@ final class PlayerNotesRepository
              WHERE id = :id AND campaign_id = :campaign_id'
         );
         $stmt->execute([
+            'session_id' => $this->sessionId($campaignId, (int)($data['session_id'] ?? 0)),
             'note_type' => $this->noteType((string)($data['note_type'] ?? $note['note_type'])),
             'title' => $this->nullableClip((string)($data['title'] ?? ''), 180),
             'content' => $this->clip((string)($data['content'] ?? $note['content']), 60000),
@@ -242,6 +247,21 @@ final class PlayerNotesRepository
         ]);
 
         return $stmt->fetch() ? $partyMemberId : null;
+    }
+
+    private function sessionId(int $campaignId, int $sessionId): ?int
+    {
+        if ($sessionId <= 0) {
+            return null;
+        }
+
+        $stmt = $this->pdo->prepare('SELECT id FROM mdp_sessions WHERE id = :id AND campaign_id = :campaign_id LIMIT 1');
+        $stmt->execute([
+            'id' => $sessionId,
+            'campaign_id' => $campaignId,
+        ]);
+
+        return $stmt->fetch() ? $sessionId : null;
     }
 
     private function intList($value): array
