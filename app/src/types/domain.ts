@@ -30,6 +30,45 @@ export type PartyMember = {
   updated_at?: string | null;
 };
 
+export type PlayerNoteRecipient = {
+  note_id: number;
+  recipient_user_id: number | null;
+  recipient_party_member_id: number | null;
+  display_name?: string | null;
+  username?: string | null;
+  character_name?: string | null;
+  player_name?: string | null;
+};
+
+export type PlayerNote = {
+  id: number;
+  campaign_id: number;
+  session_id: number | null;
+  author_user_id: number | null;
+  author_party_member_id: number | null;
+  author_label: string | null;
+  origin_channel: string;
+  note_type: string;
+  title: string | null;
+  content: string;
+  share_scope: string;
+  status: string;
+  master_flag: string;
+  corrected_by_user_id: number | null;
+  corrected_at: string | null;
+  converted_target_type: string;
+  converted_target_id: number | null;
+  created_at: string;
+  updated_at: string | null;
+  author_display_name?: string | null;
+  author_username?: string | null;
+  author_character_name?: string | null;
+  author_player_name?: string | null;
+  corrected_by_display_name?: string | null;
+  corrected_by_username?: string | null;
+  recipients?: PlayerNoteRecipient[];
+};
+
 export type InventoryItem = {
   id: number;
   campaign_id: number;
