@@ -40,6 +40,40 @@ export type GameGroupMember = {
   avatar_url: string | null;
 };
 
+export type GroupCampaign = {
+  id: number;
+  owner_user_id: number;
+  name: string;
+  notes: string | null;
+  is_active: number | boolean;
+  created_at: string;
+  updated_at: string | null;
+  game_group_id: number;
+  owner_username: string;
+  owner_display_name: string | null;
+  participants_count?: number;
+};
+
+export type CampaignParticipant = {
+  id: number;
+  campaign_id: number;
+  user_id: number;
+  party_member_id: number | null;
+  role: string;
+  status: string;
+  added_by_user_id: number | null;
+  invited_at: string | null;
+  joined_at: string | null;
+  created_at: string;
+  updated_at: string | null;
+  username: string;
+  display_name: string | null;
+  email: string;
+  avatar_url: string | null;
+  character_name: string | null;
+  player_name: string | null;
+};
+
 export type Campaign = {
   id: number;
   name: string;
