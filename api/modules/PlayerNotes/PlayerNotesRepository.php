@@ -10,7 +10,7 @@ final class PlayerNotesRepository
     {
         $limit = max(1, min($limit, 300));
         $stmt = $this->pdo->prepare(
-            'SELECT n.id, n.campaign_id, n.session_id, n.author_user_id, n.author_party_member_id, n.author_label,
+            "SELECT n.id, n.campaign_id, n.session_id, n.author_user_id, n.author_party_member_id, n.author_label,
                     n.origin_channel, n.note_type, n.title, n.content, n.share_scope, n.status, n.master_flag,
                     n.corrected_by_user_id, n.corrected_at, n.converted_target_type, n.converted_target_id,
                     n.created_at, n.updated_at,
@@ -25,9 +25,9 @@ final class PlayerNotesRepository
              LEFT JOIN mdp_party_members pm ON pm.id = n.author_party_member_id
              LEFT JOIN mdp_users cu ON cu.id = n.corrected_by_user_id
              WHERE n.campaign_id = :campaign_id
-               AND n.status <> ''deleted''
+               AND n.status <> 'deleted'
              ORDER BY n.created_at DESC, n.id DESC
-             LIMIT ' . $limit
+             LIMIT " . $limit
         );
         $stmt->execute(['campaign_id' => $campaignId]);
         $notes = $stmt->fetchAll();
@@ -51,12 +51,12 @@ final class PlayerNotesRepository
         $authorPartyMemberId = $this->partyMemberId($campaignId, (int)($data['author_party_member_id'] ?? 0));
 
         $stmt = $this->pdo->prepare(
-            'INSERT INTO mdp_player_notes
+            "INSERT INTO mdp_player_notes
                 (campaign_id, session_id, author_user_id, author_party_member_id, author_label, origin_channel,
                  note_type, title, content, share_scope, status, master_flag)
              VALUES
-                (:campaign_id, :session_id, :author_user_id, :author_party_member_id, :author_label, ''web'',
-                 :note_type, :title, :content, :share_scope, ''visible'', :master_flag)'
+                (:campaign_id, :session_id, :author_user_id, :author_party_member_id, :author_label, 'web',
+                 :note_type, :title, :content, :share_scope, 'visible', :master_flag)"
         );
         $stmt->execute([
             'campaign_id' => $campaignId,
@@ -127,9 +127,9 @@ final class PlayerNotesRepository
         $this->insertRevision($note, $userId, 'Eliminazione logica');
 
         $stmt = $this->pdo->prepare(
-            'UPDATE mdp_player_notes
-             SET status = ''deleted'', corrected_by_user_id = :user_id, corrected_at = NOW(), updated_at = NOW()
-             WHERE id = :id AND campaign_id = :campaign_id'
+            "UPDATE mdp_player_notes
+             SET status = 'deleted', corrected_by_user_id = :user_id, corrected_at = NOW(), updated_at = NOW()
+             WHERE id = :id AND campaign_id = :campaign_id"
         );
         $stmt->execute([
             'user_id' => $userId,
