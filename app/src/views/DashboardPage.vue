@@ -7,7 +7,7 @@
             <div class="brand-die">d20</div>
             <div>
               <h1 class="brand-title">MyDnDParty</h1>
-              <p class="brand-subtitle">Dashboard operativa su dati reali.</p>
+              <p class="brand-subtitle">Memoria viva della campagna.</p>
             </div>
           </div>
 
@@ -15,18 +15,6 @@
             <span>⌕</span>
             <span>Ricerca globale non ancora attiva</span>
             <span class="search-key">Prossimo step</span>
-          </div>
-
-          <div class="top-actions">
-            <div class="icon-square is-optional" aria-label="Richieste amicizia">♙<span v-if="stats.friend_requests" class="status-badge">{{ stats.friend_requests }}</span></div>
-            <div class="icon-square is-optional" aria-label="Messaggi">✉<span v-if="stats.messages" class="status-badge">{{ stats.messages }}</span></div>
-            <div class="profile-chip">
-              <div class="profile-avatar">DM</div>
-              <div>
-                <p class="profile-name">Master</p>
-                <p class="profile-role">Utente autenticato</p>
-              </div>
-            </div>
           </div>
         </header>
 
@@ -48,13 +36,13 @@
 
             <div class="sidebar-lore">
               <div class="campfire-scene">♜ ⚔ 🔥 ⚔ ♜</div>
-              <p class="lore-copy">Le sezioni sono presenti, ma mostrano solo dati reali o stati vuoti.</p>
+              <p class="lore-copy">La dashboard mostra solo dati reali o stati vuoti.</p>
             </div>
 
             <div class="sidebar-status">
               <span>Campagne: <strong>{{ stats.campaigns }}</strong></span>
-              <span>Messaggi: <strong>{{ stats.messages }}</strong></span>
-              <span>Richieste: <strong>{{ stats.friend_requests }}</strong></span>
+              <span>Sessioni: <strong>{{ stats.sessions }}</strong></span>
+              <span>Note: <strong>{{ stats.messages }}</strong></span>
             </div>
           </aside>
 
@@ -67,25 +55,26 @@
                   <h2 class="hero-title">{{ campaignTitle }}</h2>
                   <p class="hero-subtitle">{{ campaignSubtitle }}</p>
                   <div class="hero-actions">
-                    <ion-button class="rpg-button rpg-button-primary" expand="block" router-link="/tabs/campaigns">Campagne</ion-button>
-                    <ion-button class="rpg-button rpg-button-success" expand="block" router-link="/tabs/combat">Combattimento</ion-button>
+                    <ion-button class="rpg-button rpg-button-primary" expand="block" router-link="/tabs/sessions">Sessioni</ion-button>
+                    <ion-button class="rpg-button rpg-button-success" expand="block" router-link="/tabs/notes">Note</ion-button>
                     <ion-button class="rpg-button rpg-button-gold" expand="block" router-link="/tabs/inventory">Inventario</ion-button>
                   </div>
                 </div>
               </article>
 
               <article class="fantasy-panel next-session-panel">
-                <div class="panel-header"><h3 class="panel-title">⚔ Combattimento attivo</h3></div>
-                <div class="session-body" v-if="summary?.active_encounter">
-                  <p class="session-date">{{ summary.active_encounter.name }}</p>
-                  <p class="session-time">Round {{ summary.active_encounter.current_round }}</p>
-                  <p class="session-title">{{ summary.combatants.length }} combattenti caricati</p>
-                  <p class="session-copy">Dati recuperati da encounter e combattenti migrati.</p>
-                  <ion-button class="rpg-button rpg-button-primary" expand="block" router-link="/tabs/combat">Apri iniziativa →</ion-button>
+                <div class="panel-header"><h3 class="panel-title">✎ Ultima sessione</h3></div>
+                <div class="session-body" v-if="summary?.latest_session">
+                  <p class="session-date">Sessione #{{ summary.latest_session.session_number }}</p>
+                  <p class="session-title">{{ summary.latest_session.title }}</p>
+                  <p class="session-time" v-if="summary.latest_session.real_date">{{ formatDate(summary.latest_session.real_date) }}</p>
+                  <p class="session-copy">{{ summary.latest_session.summary || 'Nessun riassunto pubblico ancora presente.' }}</p>
+                  <ion-button class="rpg-button rpg-button-primary" expand="block" router-link="/tabs/sessions">Apri diario →</ion-button>
                 </div>
                 <div class="session-body" v-else>
-                  <p class="session-title">Nessun combattimento attivo</p>
-                  <p class="session-copy">La sezione è pronta, ma non ci sono encounter per la campagna attiva.</p>
+                  <p class="session-title">Nessuna sessione registrata</p>
+                  <p class="session-copy">Crea la prima sessione per iniziare la cronologia della campagna.</p>
+                  <ion-button class="rpg-button rpg-button-primary" expand="block" router-link="/tabs/sessions">Crea sessione</ion-button>
                 </div>
               </article>
 
@@ -123,25 +112,11 @@
                 <p v-else class="entity-meta">Nessun personaggio reale nella campagna attiva.</p>
               </article>
 
-              <article class="fantasy-panel missions-panel">
-                <div class="panel-header"><h3 class="panel-title">✉ Messaggi</h3></div>
-                <p class="entity-meta">Nessun messaggio presente. La sezione verrà alimentata quando introdurremo le tabelle messaggi.</p>
-              </article>
-
-              <article class="fantasy-panel online-panel">
-                <div class="panel-header">
-                  <h3 class="panel-title">♙ Richieste amicizia</h3>
-                  <span class="online-count">{{ stats.friend_requests }}</span>
-                </div>
-                <p class="entity-meta">Nessuna richiesta amicizia presente. La voce resta reale: zero finché non esiste una richiesta nel database.</p>
-              </article>
-
-              <article class="fantasy-panel dice-panel">
-                <div class="panel-header"><h3 class="panel-title">◇ Dado rapido</h3></div>
-                <div class="dice-body">
-                  <div class="dice-select"><span>Modulo legacy</span><strong>da migrare</strong></div>
-                  <p class="dice-quote">Qui andrà il roller reale, non un risultato precompilato.</p>
-                  <ion-button class="rpg-button rpg-button-primary" expand="block" disabled>Tira il dado</ion-button>
+              <article class="fantasy-panel notes-panel">
+                <div class="panel-header"><h3 class="panel-title">✎ Note campagna</h3></div>
+                <div class="note-body">
+                  <p>{{ summary?.campaign?.notes || 'Nessuna nota reale presente per la campagna attiva.' }}</p>
+                  <ion-button class="rpg-button rpg-button-primary" expand="block" router-link="/tabs/notes">Aggiungi nota</ion-button>
                 </div>
               </article>
 
@@ -153,25 +128,10 @@
                 <div class="log-list" v-if="combatants.length">
                   <div v-for="combatant in combatants" :key="combatant.id" class="log-row">
                     <span class="log-date">{{ combatant.initiative }}</span>
-                    <p class="log-copy">{{ combatant.name }} · {{ combatant.type }}<span v-if="combatant.effects?.length"> · {{ combatant.effects.length }} effetti</span></p>
+                    <p class="log-copy">{{ combatant.name }} · {{ combatant.type }}</p>
                   </div>
                 </div>
                 <p v-else class="entity-meta">Nessun combattente presente nell'encounter attivo.</p>
-              </article>
-
-              <article class="fantasy-panel progress-panel">
-                <div class="panel-header"><h3 class="panel-title">◈ Portafoglio</h3></div>
-                <div class="progress-body">
-                  <p class="progress-label">{{ walletSummary }}</p>
-                  <p class="next-objective">Righe portafoglio reali: {{ stats.wallet_rows }}</p>
-                </div>
-              </article>
-
-              <article class="fantasy-panel notes-panel">
-                <div class="panel-header"><h3 class="panel-title">✎ Note campagna</h3></div>
-                <div class="note-body">
-                  <p>{{ summary?.campaign?.notes || 'Nessuna nota reale presente per la campagna attiva.' }}</p>
-                </div>
               </article>
 
               <article class="fantasy-panel loot-panel">
@@ -192,7 +152,7 @@
 
             <footer class="rpg-footer">
               <span>Campagna: <strong>{{ campaignTitle }}</strong></span>
-              <span>Server: <span class="online">MyDnDParty Online</span></span>
+              <span>Sessioni: <strong>{{ stats.sessions }}</strong></span>
               <span>Dati: reali</span>
             </footer>
           </main>
@@ -214,6 +174,7 @@ const summary = ref<DashboardSummary | null>(null);
 
 const emptyStats: DashboardStats = {
   campaigns: 0,
+  sessions: 0,
   party_members: 0,
   inventory_items: 0,
   wallet_rows: 0,
@@ -225,12 +186,12 @@ const emptyStats: DashboardStats = {
 
 const navItems = computed(() => [
   { label: 'Dashboard', icon: '⌂', to: '/tabs/dashboard', active: true },
+  { label: 'Sessioni', icon: '✎', to: '/tabs/sessions', active: false, badge: stats.value.sessions || undefined },
+  { label: 'Note', icon: '✉', to: '/tabs/notes', active: false },
   { label: 'Campagne', icon: '▣', to: '/tabs/campaigns', active: false, badge: stats.value.campaigns || undefined },
   { label: 'Party', icon: '⚔', to: '/tabs/party', active: false, badge: stats.value.party_members || undefined },
   { label: 'Inventario', icon: '◈', to: '/tabs/inventory', active: false, badge: stats.value.inventory_items || undefined },
-  { label: 'Combattimento', icon: '♜', to: '/tabs/combat', active: false, badge: stats.value.combatants || undefined },
-  { label: 'Messaggi', icon: '✉', to: '/tabs/more', active: false, badge: stats.value.messages || undefined },
-  { label: 'Richieste', icon: '♙', to: '/tabs/more', active: false, badge: stats.value.friend_requests || undefined }
+  { label: 'Combattimento', icon: '♜', to: '/tabs/combat', active: false, badge: stats.value.combatants || undefined }
 ]);
 
 const stats = computed(() => summary.value?.stats || emptyStats);
@@ -241,17 +202,11 @@ const campaignTitle = computed(() => summary.value?.campaign?.name || 'Nessuna c
 const campaignSubtitle = computed(() => summary.value?.campaign?.notes || 'Crea o attiva una campagna per alimentare la dashboard.');
 
 const statRows = computed(() => [
-  { label: 'Campagne', value: stats.value.campaigns, meta: 'Campagne accessibili all’utente' },
+  { label: 'Sessioni', value: stats.value.sessions, meta: 'Sessioni registrate nel diario' },
   { label: 'Personaggi', value: stats.value.party_members, meta: 'Membri del party nella campagna attiva' },
   { label: 'Inventario', value: stats.value.inventory_items, meta: 'Oggetti migrati o creati' },
   { label: 'Encounter', value: stats.value.encounters, meta: 'Combattimenti disponibili' }
 ]);
-
-const walletSummary = computed(() => {
-  const wallet = summary.value?.wallet || [];
-  if (!wallet.length) return 'Nessuna moneta registrata.';
-  return wallet.map((row) => `${row.code}: ${row.quantity}`).join(' · ');
-});
 
 function memberInitials(name: string) {
   return name
@@ -260,6 +215,10 @@ function memberInitials(name: string) {
     .join('')
     .slice(0, 2)
     .toUpperCase();
+}
+
+function formatDate(value: string) {
+  return new Date(`${value}T00:00:00`).toLocaleDateString('it-IT');
 }
 
 onMounted(async () => {
