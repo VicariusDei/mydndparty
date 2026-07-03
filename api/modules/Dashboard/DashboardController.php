@@ -7,6 +7,7 @@ final class DashboardController
         private PartyRepository $party,
         private InventoryRepository $inventory,
         private CombatRepository $combat,
+        private SessionsRepository $sessions,
         private array $config
     ) {
     }
@@ -21,6 +22,7 @@ final class DashboardController
                 'campaign' => null,
                 'stats' => [
                     'campaigns' => count($this->campaigns->listByUser($userId)),
+                    'sessions' => 0,
                     'party_members' => 0,
                     'inventory_items' => 0,
                     'wallet_rows' => 0,
@@ -29,6 +31,7 @@ final class DashboardController
                     'messages' => 0,
                     'friend_requests' => 0,
                 ],
+                'latest_session' => null,
                 'party_members' => [],
                 'recent_inventory' => [],
                 'wallet' => [],
@@ -50,6 +53,7 @@ final class DashboardController
             'campaign' => $campaign,
             'stats' => [
                 'campaigns' => count($this->campaigns->listByUser($userId)),
+                'sessions' => $this->sessions->countByCampaign($campaignId),
                 'party_members' => count($partyMembers),
                 'inventory_items' => $this->inventory->countByCampaign($campaignId),
                 'wallet_rows' => count($wallet),
@@ -58,6 +62,7 @@ final class DashboardController
                 'messages' => 0,
                 'friend_requests' => 0,
             ],
+            'latest_session' => $this->sessions->latestByCampaign($campaignId),
             'party_members' => array_slice($partyMembers, 0, 6),
             'recent_inventory' => $this->inventory->recentByCampaign($campaignId, 5),
             'wallet' => $wallet,
