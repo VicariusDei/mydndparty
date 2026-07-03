@@ -27,7 +27,7 @@
       </ion-content>
     </ion-menu>
 
-    <ion-menu-button class="hamburger-button" auto-hide="false" />
+    <ion-menu-button class="hamburger-button" :auto-hide="false" />
     <ion-router-outlet id="main-content" />
   </ion-page>
 </template>
@@ -52,7 +52,6 @@ import {
   flashOutline,
   homeOutline,
   mapOutline,
-  menuOutline,
   peopleOutline,
   settingsOutline
 } from 'ionicons/icons';
@@ -67,8 +66,6 @@ const menuItems = [
   { label: 'Combattimento', to: '/tabs/combat', icon: flashOutline },
   { label: 'Altro', to: '/tabs/more', icon: settingsOutline }
 ];
-
-void menuOutline;
 </script>
 
 <style scoped>
