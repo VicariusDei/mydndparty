@@ -40,6 +40,7 @@ const router = useRouter();
 
 const entries = [
   { title: 'Dashboard', description: 'Riepilogo reale di campagna, party, inventario e combattimento.', to: '/tabs/dashboard' },
+  { title: 'Sessioni / Diario', description: 'Cronologia sessioni, data nel mondo, riassunti e note master.', to: '/tabs/sessions' },
   { title: 'Note giocatori', description: 'Appunti subito visibili con visibilità party, privata o ristretta.', to: '/tabs/notes' },
   { title: 'Campagne', description: 'Elenco campagne, attivazione e diario master.', to: '/tabs/campaigns' },
   { title: 'Party', description: 'Personaggi migrati da compagnia e nuovi personaggi.', to: '/tabs/party' },
