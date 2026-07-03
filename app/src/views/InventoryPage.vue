@@ -14,49 +14,67 @@
       </section>
 
       <section class="section-block">
-        <article class="fantasy-card entity-card">
-          <div>
-            <p class="entity-name">{{ form.id ? 'Modifica oggetto' : 'Nuovo oggetto' }}</p>
-            <p class="entity-meta">Porting delle funzioni legacy di inventario: descrizione, quantità, valore, categoria, identificazione e note.</p>
+        <article class="fantasy-card form-card">
+          <p class="entity-name">{{ form.id ? 'Modifica oggetto' : 'Nuovo oggetto' }}</p>
+          <p class="entity-meta">Descrizione, quantità, valore, categoria, identificazione e note.</p>
 
-            <ion-input v-model="form.name" label="Nome oggetto" label-placement="stacked" fill="outline" />
-            <ion-input v-model="form.category" label="Categoria" label-placement="stacked" fill="outline" />
-            <ion-input v-model="form.quantity" label="Quantità" label-placement="stacked" fill="outline" type="number" />
-            <ion-input v-model="form.value_gold" label="Valore in oro" label-placement="stacked" fill="outline" type="number" />
-
-            <ion-select v-model="form.owner_party_member_id" label="Proprietario" label-placement="stacked" fill="outline">
-              <ion-select-option :value="0">Party</ion-select-option>
-              <ion-select-option v-for="member in partyMembers" :key="member.id" :value="member.id">
-                {{ member.character_name }} · {{ member.player_name }}
-              </ion-select-option>
-            </ion-select>
-
-            <label class="auth-check">
-              <ion-checkbox v-model="form.is_identified" />
-              <span>Identificato</span>
-            </label>
-
-            <ion-input v-model="form.notes" label="Note" label-placement="stacked" fill="outline" />
-
-            <p class="auth-error" v-if="error">{{ error }}</p>
-            <p class="auth-success" v-if="message">{{ message }}</p>
-
-            <div class="action-row compact-actions">
-              <ion-button class="action-button" expand="block" :disabled="loading || !form.name" @click="saveItem">
-                {{ form.id ? 'Salva modifiche' : 'Crea oggetto' }}
-              </ion-button>
-              <ion-button class="action-button" expand="block" fill="outline" :disabled="loading" @click="resetForm">Annulla</ion-button>
+          <div class="form-grid">
+            <div class="form-field">
+              <label>Nome oggetto</label>
+              <ion-input v-model="form.name" class="clean-input" fill="outline" />
             </div>
+            <div class="form-field">
+              <label>Categoria</label>
+              <ion-input v-model="form.category" class="clean-input" fill="outline" />
+            </div>
+            <div class="form-field">
+              <label>Quantità</label>
+              <ion-input v-model="form.quantity" class="clean-input" fill="outline" type="number" />
+            </div>
+            <div class="form-field">
+              <label>Valore in oro</label>
+              <ion-input v-model="form.value_gold" class="clean-input" fill="outline" type="number" />
+            </div>
+            <div class="form-field">
+              <label>Proprietario</label>
+              <ion-select v-model="form.owner_party_member_id" class="clean-input" fill="outline">
+                <ion-select-option :value="0">Party</ion-select-option>
+                <ion-select-option v-for="member in partyMembers" :key="member.id" :value="member.id">
+                  {{ member.character_name }} · {{ member.player_name }}
+                </ion-select-option>
+              </ion-select>
+            </div>
+            <div class="form-field">
+              <label>Identificazione</label>
+              <label class="auth-check">
+                <ion-checkbox v-model="form.is_identified" />
+                <span>Identificato</span>
+              </label>
+            </div>
+            <div class="form-field is-full">
+              <label>Note</label>
+              <ion-input v-model="form.notes" class="clean-input" fill="outline" />
+            </div>
+          </div>
+
+          <p class="auth-error" v-if="error">{{ error }}</p>
+          <p class="auth-success" v-if="message">{{ message }}</p>
+
+          <div class="form-actions">
+            <ion-button class="action-button" expand="block" :disabled="loading || !form.name" @click="saveItem">
+              {{ form.id ? 'Salva modifiche' : 'Crea oggetto' }}
+            </ion-button>
+            <ion-button class="action-button" expand="block" fill="outline" :disabled="loading" @click="resetForm">Annulla</ion-button>
           </div>
         </article>
       </section>
 
       <section class="section-block" v-if="wallet.length">
         <div class="entity-list">
-          <article class="fantasy-card entity-card" v-for="coin in wallet" :key="coin.id">
+          <article class="fantasy-card list-card" v-for="coin in wallet" :key="coin.id">
             <div>
-              <p class="entity-name">{{ coin.name }} · {{ coin.code }}</p>
-              <p class="entity-meta">Disponibili {{ coin.quantity }} · deposito {{ coin.deposit_quantity }} · valore {{ coin.gold_value }} mo</p>
+              <p class="list-title">{{ coin.name }} · {{ coin.code }}</p>
+              <p class="list-meta">Disponibili {{ coin.quantity }} · deposito {{ coin.deposit_quantity }} · valore {{ coin.gold_value }} mo</p>
               <div class="badge-row">
                 <ion-button size="small" fill="outline" :disabled="loading" @click="adjustWallet(coin.id, 1, 0)">+1 mano</ion-button>
                 <ion-button size="small" fill="outline" :disabled="loading" @click="adjustWallet(coin.id, -1, 0)">-1 mano</ion-button>
@@ -70,15 +88,15 @@
 
       <section class="section-block">
         <div class="entity-list" v-if="items.length">
-          <article class="fantasy-card entity-card" v-for="item in items" :key="item.id">
+          <article class="fantasy-card list-card" v-for="item in items" :key="item.id">
             <div>
-              <p class="entity-name">{{ item.name }}</p>
-              <p class="entity-meta">{{ item.category || 'Senza categoria' }} · qta {{ item.quantity }} · {{ item.value_gold }} mo</p>
+              <p class="list-title">{{ item.name }}</p>
+              <p class="list-meta">{{ item.category || 'Senza categoria' }} · qta {{ item.quantity }} · {{ item.value_gold }} mo</p>
               <div class="badge-row">
                 <span class="fantasy-badge">{{ isIdentified(item) ? 'Identificato' : 'Da identificare' }}</span>
                 <span class="fantasy-badge">{{ item.owner_character_name || 'Party' }}</span>
               </div>
-              <p class="entity-meta" v-if="item.notes">{{ item.notes }}</p>
+              <p class="list-meta" v-if="item.notes">{{ item.notes }}</p>
               <div class="badge-row">
                 <ion-button size="small" fill="outline" :disabled="loading" @click="editItem(item)">Modifica</ion-button>
                 <ion-button size="small" fill="outline" color="danger" :disabled="loading" @click="deleteItem(item.id)">Elimina</ion-button>
@@ -87,10 +105,10 @@
           </article>
         </div>
 
-        <article class="fantasy-card entity-card" v-else>
+        <article class="fantasy-card list-card" v-else>
           <div>
-            <p class="entity-name">Nessun oggetto</p>
-            <p class="entity-meta">L'inventario è vuoto per la campagna attiva.</p>
+            <p class="list-title">Nessun oggetto</p>
+            <p class="list-meta">L'inventario è vuoto per la campagna attiva.</p>
           </div>
         </article>
       </section>
