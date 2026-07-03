@@ -9,18 +9,18 @@ final class GroupsRepository
     public function listByUser(int $userId): array
     {
         $stmt = $this->pdo->prepare(
-            'SELECT g.id, g.name, g.slug, g.description, g.created_by_user_id, g.is_active, g.created_at, g.updated_at,
+            "SELECT g.id, g.name, g.slug, g.description, g.created_by_user_id, g.is_active, g.created_at, g.updated_at,
                     gm.role AS my_role,
                     gm.status AS my_status,
                     COUNT(DISTINCT active_members.id) AS members_count,
                     COUNT(DISTINCT gc.id) AS campaigns_count
              FROM mdp_game_groups g
              INNER JOIN mdp_game_group_members gm ON gm.game_group_id = g.id AND gm.user_id = :user_id
-             LEFT JOIN mdp_game_group_members active_members ON active_members.game_group_id = g.id AND active_members.status = ''active''
+             LEFT JOIN mdp_game_group_members active_members ON active_members.game_group_id = g.id AND active_members.status = 'active'
              LEFT JOIN mdp_game_group_campaigns gc ON gc.game_group_id = g.id
-             WHERE gm.status = ''active'' AND g.is_active = 1
+             WHERE gm.status = 'active' AND g.is_active = 1
              GROUP BY g.id, g.name, g.slug, g.description, g.created_by_user_id, g.is_active, g.created_at, g.updated_at, gm.role, gm.status
-             ORDER BY g.name ASC'
+             ORDER BY g.name ASC"
         );
         $stmt->execute(['user_id' => $userId]);
 
@@ -44,11 +44,11 @@ final class GroupsRepository
 
         $groupId = (int)$this->pdo->lastInsertId();
         $stmt = $this->pdo->prepare(
-            'INSERT INTO mdp_game_group_members
+            "INSERT INTO mdp_game_group_members
                 (game_group_id, user_id, username_snapshot, role, status, joined_at)
-             SELECT :group_id, id, username, ''owner'', ''active'', NOW()
+             SELECT :group_id, id, username, 'owner', 'active', NOW()
              FROM mdp_users
-             WHERE id = :user_id'
+             WHERE id = :user_id"
         );
         $stmt->execute([
             'group_id' => $groupId,
@@ -86,14 +86,14 @@ final class GroupsRepository
 
         $role = in_array($role, ['admin', 'member'], true) ? $role : 'member';
         $stmt = $this->pdo->prepare(
-            'INSERT INTO mdp_game_group_members
+            "INSERT INTO mdp_game_group_members
                 (game_group_id, user_id, username_snapshot, role, status, invited_by_user_id, invited_at, joined_at)
              VALUES
-                (:group_id, :user_id, :username_snapshot, :role, ''active'', :actor_user_id, NOW(), NOW())
+                (:group_id, :user_id, :username_snapshot, :role, 'active', :actor_user_id, NOW(), NOW())
              ON DUPLICATE KEY UPDATE
                 role = VALUES(role),
-                status = ''active'',
-                updated_at = NOW()'
+                status = 'active',
+                updated_at = NOW()"
         );
         $stmt->execute([
             'group_id' => $groupId,
@@ -121,9 +121,9 @@ final class GroupsRepository
     public function isMember(int $groupId, int $userId): bool
     {
         $stmt = $this->pdo->prepare(
-            'SELECT id FROM mdp_game_group_members
-             WHERE game_group_id = :group_id AND user_id = :user_id AND status = ''active''
-             LIMIT 1'
+            "SELECT id FROM mdp_game_group_members
+             WHERE game_group_id = :group_id AND user_id = :user_id AND status = 'active'
+             LIMIT 1"
         );
         $stmt->execute([
             'group_id' => $groupId,
@@ -136,9 +136,9 @@ final class GroupsRepository
     public function assertCanManageGroup(int $groupId, int $userId): void
     {
         $stmt = $this->pdo->prepare(
-            'SELECT role FROM mdp_game_group_members
-             WHERE game_group_id = :group_id AND user_id = :user_id AND status = ''active''
-             LIMIT 1'
+            "SELECT role FROM mdp_game_group_members
+             WHERE game_group_id = :group_id AND user_id = :user_id AND status = 'active'
+             LIMIT 1"
         );
         $stmt->execute([
             'group_id' => $groupId,
