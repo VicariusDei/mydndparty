@@ -26,6 +26,8 @@ require_once __DIR__ . '/modules/Inventory/InventoryRepository.php';
 require_once __DIR__ . '/modules/Inventory/InventoryController.php';
 require_once __DIR__ . '/modules/Combat/CombatRepository.php';
 require_once __DIR__ . '/modules/Combat/CombatController.php';
+require_once __DIR__ . '/modules/PlayerNotes/PlayerNotesRepository.php';
+require_once __DIR__ . '/modules/PlayerNotes/PlayerNotesController.php';
 require_once __DIR__ . '/modules/Dashboard/DashboardController.php';
 
 session_set_cookie_params([
@@ -67,6 +69,8 @@ try {
     $inventoryController = new InventoryController($inventoryRepository, $campaignRepository, $config);
     $combatRepository = new CombatRepository($pdo);
     $combatController = new CombatController($combatRepository, $campaignRepository, $config);
+    $playerNotesRepository = new PlayerNotesRepository($pdo);
+    $playerNotesController = new PlayerNotesController($playerNotesRepository, $campaignRepository, $config);
     $dashboardController = new DashboardController($campaignRepository, $partyRepository, $inventoryRepository, $combatRepository, $config);
 
     switch ($route) {
@@ -126,6 +130,18 @@ try {
             break;
         case 'party/delete':
             $partyController->delete();
+            break;
+        case 'player-notes/list':
+            $playerNotesController->list();
+            break;
+        case 'player-notes/create':
+            $playerNotesController->create();
+            break;
+        case 'player-notes/update':
+            $playerNotesController->update();
+            break;
+        case 'player-notes/delete':
+            $playerNotesController->delete();
             break;
         case 'inventory/list':
             $inventoryController->list();
