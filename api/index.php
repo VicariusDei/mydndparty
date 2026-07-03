@@ -121,6 +121,12 @@ try {
         case 'party/create':
             $partyController->create();
             break;
+        case 'party/update':
+            $partyController->update();
+            break;
+        case 'party/delete':
+            $partyController->delete();
+            break;
         case 'inventory/list':
             $inventoryController->list();
             break;
