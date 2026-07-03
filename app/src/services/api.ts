@@ -7,8 +7,19 @@ export type ApiResponse<T> = {
 const appBase = import.meta.env.BASE_URL.replace(/\/$/, '');
 export const API_BASE = `${appBase}/api/index.php`;
 
-export function apiUrl(route: string): string {
-  return `${API_BASE}?route=${encodeURIComponent(route)}`;
+export function apiUrl(route: string, params?: Record<string, string | number | boolean | null | undefined>): string {
+  const search = new URLSearchParams();
+  search.set('route', route);
+
+  if (params) {
+    Object.entries(params).forEach(([key, value]) => {
+      if (value !== null && value !== undefined) {
+        search.set(key, String(value));
+      }
+    });
+  }
+
+  return `${API_BASE}?${search.toString()}`;
 }
 
 async function readApiResponse<T>(response: Response): Promise<ApiResponse<T>> {
@@ -41,9 +52,9 @@ async function readApiResponse<T>(response: Response): Promise<ApiResponse<T>> {
   return payload;
 }
 
-export async function apiGet<T>(route: string): Promise<ApiResponse<T>> {
+export async function apiGet<T>(route: string, params?: Record<string, string | number | boolean | null | undefined>): Promise<ApiResponse<T>> {
   try {
-    const response = await fetch(apiUrl(route), {
+    const response = await fetch(apiUrl(route, params), {
       credentials: 'include'
     });
 
