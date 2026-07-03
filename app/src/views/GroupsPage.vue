@@ -8,84 +8,114 @@
       <section class="hero-card">
         <p class="hero-eyebrow">Portale sociale</p>
         <h1 class="hero-title">Gruppi di gioco</h1>
-        <p class="hero-subtitle">Gruppi, campagne e ruoli contestuali.</p>
+        <p class="hero-subtitle">Organizza gruppi, campagne e ruoli senza vincolare un account a essere solo master o solo giocatore.</p>
       </section>
 
       <section class="section-block">
-        <article class="fantasy-card entity-card">
-          <div>
-            <p class="entity-name">Nuovo gruppo</p>
-            <ion-input v-model="groupForm.name" label="Nome gruppo" label-placement="stacked" fill="outline" />
-            <ion-textarea v-model="groupForm.description" label="Descrizione" label-placement="stacked" fill="outline" :auto-grow="true" />
-            <p class="auth-error" v-if="error">{{ error }}</p>
-            <p class="auth-success" v-if="message">{{ message }}</p>
+        <article class="fantasy-card form-card">
+          <p class="entity-name">Nuovo gruppo</p>
+          <p class="entity-meta">Crea il tavolo di gioco stabile. Le campagne nasceranno poi dentro il gruppo.</p>
+          <div class="form-grid">
+            <div class="form-field">
+              <label>Nome gruppo</label>
+              <ion-input v-model="groupForm.name" class="clean-input" fill="outline" />
+            </div>
+            <div class="form-field is-full">
+              <label>Descrizione</label>
+              <ion-textarea v-model="groupForm.description" class="clean-input" fill="outline" :auto-grow="true" />
+            </div>
+          </div>
+          <p class="auth-error" v-if="error">{{ error }}</p>
+          <p class="auth-success" v-if="message">{{ message }}</p>
+          <div class="form-actions">
             <ion-button class="action-button" expand="block" :disabled="loading || !groupForm.name" @click="createGroup">Crea gruppo</ion-button>
+            <ion-button class="action-button" expand="block" fill="outline" :disabled="loading" @click="clearForms">Pulisci</ion-button>
           </div>
         </article>
       </section>
 
       <section class="section-block">
         <div class="entity-list" v-if="groups.length">
-          <article class="fantasy-card entity-card" v-for="group in groups" :key="group.id">
+          <article class="fantasy-card list-card" v-for="group in groups" :key="group.id">
             <div>
-              <p class="entity-name">{{ group.name }}</p>
-              <p class="entity-meta">{{ group.description || 'Nessuna descrizione.' }}</p>
+              <p class="list-title">{{ group.name }}</p>
+              <p class="list-meta">{{ group.description || 'Nessuna descrizione.' }}</p>
               <div class="badge-row">
                 <span class="fantasy-badge">{{ groupRoleLabel(group.my_role || 'member') }}</span>
                 <span class="fantasy-badge">{{ group.members_count || 0 }} membri</span>
                 <span class="fantasy-badge">{{ group.campaigns_count || 0 }} campagne</span>
               </div>
-              <ion-button size="small" fill="outline" :disabled="loading" @click="selectGroup(group)">Gestisci gruppo</ion-button>
+              <div class="badge-row">
+                <ion-button size="small" fill="outline" :disabled="loading" @click="selectGroup(group)">Gestisci gruppo</ion-button>
+              </div>
             </div>
           </article>
         </div>
-        <article class="fantasy-card entity-card" v-else><div><p class="entity-name">Nessun gruppo</p><p class="entity-meta">Crea il primo gruppo di gioco.</p></div></article>
+        <article class="fantasy-card list-card" v-else>
+          <div><p class="list-title">Nessun gruppo</p><p class="list-meta">Crea il primo gruppo di gioco.</p></div>
+        </article>
       </section>
 
       <section class="section-block" v-if="selectedGroup">
-        <article class="fantasy-card entity-card">
+        <article class="fantasy-card list-card">
           <div>
-            <p class="entity-name">{{ selectedGroup.name }}</p>
-            <p class="entity-meta">Membri e campagne del gruppo selezionato.</p>
+            <p class="list-title">{{ selectedGroup.name }}</p>
+            <p class="list-meta">Membri e campagne del gruppo selezionato.</p>
           </div>
         </article>
 
-        <article class="fantasy-card entity-card">
-          <div>
-            <p class="entity-name">Aggiungi membro</p>
-            <ion-input v-model="memberForm.username" label="Username" label-placement="stacked" fill="outline" />
-            <ion-select v-model="memberForm.role" label="Ruolo nel gruppo" label-placement="stacked" fill="outline">
-              <ion-select-option value="member">Membro</ion-select-option>
-              <ion-select-option value="admin">Admin gruppo</ion-select-option>
-            </ion-select>
+        <article class="fantasy-card form-card">
+          <p class="entity-name">Aggiungi membro</p>
+          <div class="form-grid">
+            <div class="form-field">
+              <label>Username</label>
+              <ion-input v-model="memberForm.username" class="clean-input" fill="outline" />
+            </div>
+            <div class="form-field">
+              <label>Ruolo nel gruppo</label>
+              <ion-select v-model="memberForm.role" class="clean-input" fill="outline">
+                <ion-select-option value="member">Membro</ion-select-option>
+                <ion-select-option value="admin">Admin gruppo</ion-select-option>
+              </ion-select>
+            </div>
+          </div>
+          <div class="form-actions">
             <ion-button class="action-button" expand="block" :disabled="loading || !memberForm.username" @click="addMember">Aggiungi membro</ion-button>
           </div>
         </article>
 
-        <article class="fantasy-card entity-card">
-          <div>
-            <p class="entity-name">Nuova campagna nel gruppo</p>
-            <ion-input v-model="campaignForm.name" label="Nome campagna" label-placement="stacked" fill="outline" />
-            <ion-textarea v-model="campaignForm.notes" label="Note campagna" label-placement="stacked" fill="outline" :auto-grow="true" />
+        <article class="fantasy-card form-card">
+          <p class="entity-name">Nuova campagna nel gruppo</p>
+          <div class="form-grid">
+            <div class="form-field">
+              <label>Nome campagna</label>
+              <ion-input v-model="campaignForm.name" class="clean-input" fill="outline" />
+            </div>
+            <div class="form-field is-full">
+              <label>Note campagna</label>
+              <ion-textarea v-model="campaignForm.notes" class="clean-input" fill="outline" :auto-grow="true" />
+            </div>
+          </div>
+          <div class="form-actions">
             <ion-button class="action-button" expand="block" :disabled="loading || !campaignForm.name" @click="createCampaign">Crea campagna</ion-button>
           </div>
         </article>
 
         <div class="entity-list" v-if="members.length">
-          <article class="fantasy-card entity-card" v-for="member in members" :key="member.id">
+          <article class="fantasy-card list-card" v-for="member in members" :key="member.id">
             <div>
-              <p class="entity-name">{{ member.display_name || member.username }}</p>
-              <p class="entity-meta">@{{ member.username }} · {{ groupRoleLabel(member.role) }} · {{ member.status }}</p>
+              <p class="list-title">{{ member.display_name || member.username }}</p>
+              <p class="list-meta">@{{ member.username }} · {{ groupRoleLabel(member.role) }} · {{ member.status }}</p>
             </div>
           </article>
         </div>
 
         <div class="entity-list" v-if="campaigns.length">
-          <article class="fantasy-card entity-card" v-for="campaign in campaigns" :key="campaign.id">
+          <article class="fantasy-card list-card" v-for="campaign in campaigns" :key="campaign.id">
             <div>
-              <p class="entity-name">{{ campaign.name }}</p>
-              <p class="entity-meta">Master iniziale: {{ campaign.owner_display_name || campaign.owner_username }} · {{ campaign.participants_count || 0 }} partecipanti</p>
-              <p class="entity-meta" v-if="campaign.notes">{{ campaign.notes }}</p>
+              <p class="list-title">{{ campaign.name }}</p>
+              <p class="list-meta">Master iniziale: {{ campaign.owner_display_name || campaign.owner_username }} · {{ campaign.participants_count || 0 }} partecipanti</p>
+              <p class="list-meta" v-if="campaign.notes">{{ campaign.notes }}</p>
               <div class="badge-row">
                 <ion-button size="small" fill="outline" :disabled="loading" @click="selectCampaign(campaign)">Partecipanti</ion-button>
               </div>
@@ -95,28 +125,36 @@
       </section>
 
       <section class="section-block" v-if="selectedCampaign">
-        <article class="fantasy-card entity-card">
-          <div>
-            <p class="entity-name">Partecipanti · {{ selectedCampaign.name }}</p>
-            <ion-select v-model="participantForm.user_id" label="Membro del gruppo" label-placement="stacked" fill="outline">
-              <ion-select-option v-for="member in members" :key="member.user_id" :value="member.user_id">{{ member.display_name || member.username }}</ion-select-option>
-            </ion-select>
-            <ion-select v-model="participantForm.role" label="Ruolo in campagna" label-placement="stacked" fill="outline">
-              <ion-select-option value="player">Giocatore</ion-select-option>
-              <ion-select-option value="master">Master</ion-select-option>
-              <ion-select-option value="co_master">Co-master</ion-select-option>
-              <ion-select-option value="viewer">Spettatore</ion-select-option>
-            </ion-select>
+        <article class="fantasy-card form-card">
+          <p class="entity-name">Partecipanti · {{ selectedCampaign.name }}</p>
+          <div class="form-grid">
+            <div class="form-field">
+              <label>Membro del gruppo</label>
+              <ion-select v-model="participantForm.user_id" class="clean-input" fill="outline">
+                <ion-select-option v-for="member in members" :key="member.user_id" :value="member.user_id">{{ member.display_name || member.username }}</ion-select-option>
+              </ion-select>
+            </div>
+            <div class="form-field">
+              <label>Ruolo in campagna</label>
+              <ion-select v-model="participantForm.role" class="clean-input" fill="outline">
+                <ion-select-option value="player">Giocatore</ion-select-option>
+                <ion-select-option value="master">Master</ion-select-option>
+                <ion-select-option value="co_master">Co-master</ion-select-option>
+                <ion-select-option value="viewer">Spettatore</ion-select-option>
+              </ion-select>
+            </div>
+          </div>
+          <div class="form-actions">
             <ion-button class="action-button" expand="block" :disabled="loading || !participantForm.user_id" @click="addParticipant">Aggiungi alla campagna</ion-button>
           </div>
         </article>
 
         <div class="entity-list" v-if="participants.length">
-          <article class="fantasy-card entity-card" v-for="participant in participants" :key="participant.id">
+          <article class="fantasy-card list-card" v-for="participant in participants" :key="participant.id">
             <div>
-              <p class="entity-name">{{ participant.display_name || participant.username }}</p>
-              <p class="entity-meta">@{{ participant.username }} · {{ campaignRoleLabel(participant.role) }} · {{ participant.status }}</p>
-              <p class="entity-meta" v-if="participant.character_name">PG: {{ participant.character_name }}</p>
+              <p class="list-title">{{ participant.display_name || participant.username }}</p>
+              <p class="list-meta">@{{ participant.username }} · {{ campaignRoleLabel(participant.role) }} · {{ participant.status }}</p>
+              <p class="list-meta" v-if="participant.character_name">PG: {{ participant.character_name }}</p>
             </div>
           </article>
         </div>
@@ -223,6 +261,10 @@ async function selectGroup(group: GameGroup) {
 
 async function selectCampaign(campaign: GroupCampaign) {
   selectedCampaign.value = campaign; participants.value = []; await loadParticipants(campaign.id);
+}
+
+function clearForms() {
+  groupForm.name = ''; groupForm.description = ''; memberForm.username = ''; memberForm.role = 'member'; campaignForm.name = ''; campaignForm.notes = ''; participantForm.user_id = 0; participantForm.role = 'player';
 }
 
 async function run(action: () => Promise<void>) { loading.value = true; error.value = ''; message.value = ''; try { await action(); } finally { loading.value = false; } }
