@@ -10,41 +10,65 @@
       <section class="hero-card">
         <p class="hero-eyebrow">Compagnia</p>
         <h1 class="hero-title">Eroi e gregari</h1>
-        <p class="hero-subtitle">Gestisci personaggi, classi, razze, motto e bonus iniziativa su dati reali.</p>
+        <p class="hero-subtitle">Gestisci personaggi, giocatori, classe, stirpe, motto e bonus iniziativa.</p>
       </section>
 
       <section class="section-block">
-        <article class="fantasy-card entity-card">
-          <div>
-            <p class="entity-name">{{ form.id ? 'Modifica personaggio' : 'Nuovo personaggio' }}</p>
-            <p class="entity-meta">Porting del modulo compagnia legacy. Classi e razze sono ancora campi testuali; diventeranno tabelle dedicate nel prossimo step.</p>
+        <article class="fantasy-card form-card">
+          <p class="entity-name">{{ form.id ? 'Modifica personaggio' : 'Nuovo personaggio' }}</p>
+          <p class="entity-meta">I dati sono reali. Classi e stirpi restano testuali finché non verranno introdotte tabelle dedicate.</p>
 
-            <ion-input v-model="form.character_name" label="Nome personaggio" label-placement="stacked" fill="outline" />
-            <ion-input v-model="form.player_name" label="Giocatore" label-placement="stacked" fill="outline" />
-            <ion-input v-model="form.class_name" label="Classe" label-placement="stacked" fill="outline" />
-            <ion-input v-model="form.ancestry_name" label="Razza / stirpe" label-placement="stacked" fill="outline" />
-            <ion-input v-model="form.initiative_bonus" label="Bonus iniziativa" label-placement="stacked" fill="outline" type="number" />
-            <ion-input v-model="form.motto" label="Motto / nota breve" label-placement="stacked" fill="outline" />
-
-            <p class="auth-error" v-if="error">{{ error }}</p>
-            <p class="auth-success" v-if="message">{{ message }}</p>
-
-            <div class="action-row compact-actions">
-              <ion-button class="action-button" expand="block" :disabled="loading || !form.character_name || !form.player_name" @click="saveMember">
-                {{ form.id ? 'Salva personaggio' : 'Crea personaggio' }}
-              </ion-button>
-              <ion-button class="action-button" expand="block" fill="outline" :disabled="loading" @click="resetForm">Annulla</ion-button>
+          <div class="form-grid">
+            <div class="form-field">
+              <label>Nome personaggio</label>
+              <ion-input v-model="form.character_name" class="clean-input" fill="outline" />
             </div>
+
+            <div class="form-field">
+              <label>Giocatore</label>
+              <ion-input v-model="form.player_name" class="clean-input" fill="outline" />
+            </div>
+
+            <div class="form-field">
+              <label>Classe</label>
+              <ion-input v-model="form.class_name" class="clean-input" fill="outline" />
+            </div>
+
+            <div class="form-field">
+              <label>Razza / stirpe</label>
+              <ion-input v-model="form.ancestry_name" class="clean-input" fill="outline" />
+            </div>
+
+            <div class="form-field">
+              <label>Bonus iniziativa</label>
+              <ion-input v-model="form.initiative_bonus" class="clean-input" fill="outline" type="number" />
+            </div>
+
+            <div class="form-field">
+              <label>Motto / nota breve</label>
+              <ion-input v-model="form.motto" class="clean-input" fill="outline" />
+            </div>
+          </div>
+
+          <p class="auth-error" v-if="error">{{ error }}</p>
+          <p class="auth-success" v-if="message">{{ message }}</p>
+
+          <div class="form-actions">
+            <ion-button class="action-button" expand="block" :disabled="loading || !form.character_name || !form.player_name" @click="saveMember">
+              {{ form.id ? 'Salva personaggio' : 'Crea personaggio' }}
+            </ion-button>
+            <ion-button class="action-button" expand="block" fill="outline" :disabled="loading" @click="resetForm">Annulla</ion-button>
           </div>
         </article>
       </section>
 
       <section class="section-block">
         <div class="entity-list" v-if="members.length > 0">
-          <article class="fantasy-card entity-card" v-for="member in members" :key="member.id">
+          <article class="fantasy-card list-card" v-for="member in members" :key="member.id">
             <div>
-              <p class="entity-name">{{ member.character_name }}</p>
-              <p class="entity-meta">{{ member.player_name }} · {{ member.class_name || 'Classe non definita' }} {{ member.ancestry_name || '' }}</p>
+              <p class="list-title">{{ member.character_name }}</p>
+              <p class="list-meta">{{ member.player_name }}</p>
+              <p class="list-meta">{{ member.class_name || 'Classe non definita' }}<span v-if="member.ancestry_name"> · {{ member.ancestry_name }}</span></p>
               <div class="badge-row">
                 <span class="fantasy-badge">Ini {{ signed(member.initiative_bonus) }}</span>
                 <span class="fantasy-badge" v-if="member.motto">{{ member.motto }}</span>
@@ -57,10 +81,10 @@
           </article>
         </div>
 
-        <article class="fantasy-card entity-card" v-else>
+        <article class="fantasy-card list-card" v-else>
           <div>
-            <p class="entity-name">Nessun personaggio</p>
-            <p class="entity-meta">Crea il primo membro del party.</p>
+            <p class="list-title">Nessun personaggio</p>
+            <p class="list-meta">Crea il primo membro del party.</p>
           </div>
         </article>
       </section>
