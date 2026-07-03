@@ -30,6 +30,25 @@ export type PartyMember = {
   updated_at?: string | null;
 };
 
+export type Session = {
+  id: number;
+  campaign_id: number;
+  session_number: number;
+  title: string;
+  real_date: string | null;
+  world_date: string | null;
+  summary: string | null;
+  master_notes: string | null;
+  status: string;
+  visibility: string;
+  created_by_user_id: number | null;
+  created_at: string;
+  updated_at: string | null;
+  created_by_display_name?: string | null;
+  created_by_username?: string | null;
+  player_notes_count?: number;
+};
+
 export type PlayerNoteRecipient = {
   note_id: number;
   recipient_user_id: number | null;
@@ -44,6 +63,8 @@ export type PlayerNote = {
   id: number;
   campaign_id: number;
   session_id: number | null;
+  session_number?: number | null;
+  session_title?: string | null;
   author_user_id: number | null;
   author_party_member_id: number | null;
   author_label: string | null;
@@ -139,6 +160,7 @@ export type Combatant = {
 
 export type DashboardStats = {
   campaigns: number;
+  sessions: number;
   party_members: number;
   inventory_items: number;
   wallet_rows: number;
@@ -151,6 +173,7 @@ export type DashboardStats = {
 export type DashboardSummary = {
   campaign: Campaign | null;
   stats: DashboardStats;
+  latest_session: Session | null;
   party_members: PartyMember[];
   recent_inventory: InventoryItem[];
   wallet: WalletRow[];
