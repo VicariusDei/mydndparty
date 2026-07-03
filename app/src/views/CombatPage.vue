@@ -15,20 +15,25 @@
 
       <section class="section-block">
         <div class="entity-list">
-          <article class="fantasy-card entity-card">
-            <div>
-              <p class="entity-name">Nuovo combattimento</p>
-              <p class="entity-meta">Crea un encounter attivo per la campagna.</p>
-              <ion-input v-model="newEncounterName" label="Nome encounter" label-placement="stacked" fill="outline" />
+          <article class="fantasy-card form-card">
+            <p class="entity-name">Nuovo combattimento</p>
+            <p class="entity-meta">Crea un encounter attivo per la campagna.</p>
+            <div class="form-grid">
+              <div class="form-field is-full">
+                <label>Nome encounter</label>
+                <ion-input v-model="newEncounterName" class="clean-input" fill="outline" />
+              </div>
+            </div>
+            <div class="form-actions">
               <ion-button class="action-button" expand="block" :disabled="loading" @click="createEncounter">Crea encounter</ion-button>
             </div>
           </article>
 
-          <article class="fantasy-card entity-card" v-if="encounter">
+          <article class="fantasy-card list-card" v-if="encounter">
             <div>
-              <p class="entity-name">Azioni round</p>
-              <p class="entity-meta">Avanza il turno o apre un nuovo round decrementando gli effetti temporanei.</p>
-              <div class="action-row compact-actions">
+              <p class="list-title">Azioni round</p>
+              <p class="list-meta">Avanza il turno o apre un nuovo round decrementando gli effetti temporanei.</p>
+              <div class="form-actions">
                 <ion-button class="action-button" expand="block" :disabled="loading || combatants.length === 0" @click="nextTurn">Avanza turno</ion-button>
                 <ion-button class="action-button" expand="block" fill="outline" :disabled="loading" @click="newRound">Nuovo round</ion-button>
               </div>
@@ -39,48 +44,87 @@
 
       <section class="section-block" v-if="encounter">
         <div class="entity-list">
-          <article class="fantasy-card entity-card">
-            <div>
-              <p class="entity-name">Aggiungi PG dal party</p>
-              <p class="entity-meta">Porta un personaggio reale nell'iniziativa.</p>
-              <ion-select v-model="partyForm.party_member_id" label="Personaggio" label-placement="stacked" fill="outline">
-                <ion-select-option v-for="member in partyMembers" :key="member.id" :value="member.id">
-                  {{ member.character_name }} · {{ member.player_name }}
-                </ion-select-option>
-              </ion-select>
-              <ion-input v-model="partyForm.initiative" label="Iniziativa" label-placement="stacked" fill="outline" type="number" />
+          <article class="fantasy-card form-card">
+            <p class="entity-name">Aggiungi PG dal party</p>
+            <p class="entity-meta">Porta un personaggio reale nell'iniziativa.</p>
+            <div class="form-grid">
+              <div class="form-field">
+                <label>Personaggio</label>
+                <ion-select v-model="partyForm.party_member_id" class="clean-input" fill="outline">
+                  <ion-select-option v-for="member in partyMembers" :key="member.id" :value="member.id">
+                    {{ member.character_name }} · {{ member.player_name }}
+                  </ion-select-option>
+                </ion-select>
+              </div>
+              <div class="form-field">
+                <label>Iniziativa</label>
+                <ion-input v-model="partyForm.initiative" class="clean-input" fill="outline" type="number" />
+              </div>
+            </div>
+            <div class="form-actions">
               <ion-button class="action-button" expand="block" :disabled="loading || !partyForm.party_member_id" @click="addPartyMember">Aggiungi PG</ion-button>
             </div>
           </article>
 
-          <article class="fantasy-card entity-card">
-            <div>
-              <p class="entity-name">Aggiungi avversario / PNG</p>
-              <p class="entity-meta">Replica la generazione manuale avversari del legacy.</p>
-              <ion-input v-model="enemyForm.name" label="Nome" label-placement="stacked" fill="outline" />
-              <ion-select v-model="enemyForm.type" label="Tipo" label-placement="stacked" fill="outline">
-                <ion-select-option value="enemy">Avversario</ion-select-option>
-                <ion-select-option value="npc">PNG</ion-select-option>
-              </ion-select>
-              <ion-input v-model="enemyForm.initiative" label="Iniziativa" label-placement="stacked" fill="outline" type="number" />
-              <ion-input v-model="enemyForm.initiative_bonus" label="Bonus iniziativa" label-placement="stacked" fill="outline" type="number" />
-              <label class="auth-check"><ion-checkbox v-model="enemyForm.is_slow" /><span>Lento</span></label>
+          <article class="fantasy-card form-card">
+            <p class="entity-name">Aggiungi avversario / PNG</p>
+            <p class="entity-meta">Replica la generazione manuale avversari del legacy.</p>
+            <div class="form-grid">
+              <div class="form-field">
+                <label>Nome</label>
+                <ion-input v-model="enemyForm.name" class="clean-input" fill="outline" />
+              </div>
+              <div class="form-field">
+                <label>Tipo</label>
+                <ion-select v-model="enemyForm.type" class="clean-input" fill="outline">
+                  <ion-select-option value="enemy">Avversario</ion-select-option>
+                  <ion-select-option value="npc">PNG</ion-select-option>
+                </ion-select>
+              </div>
+              <div class="form-field">
+                <label>Iniziativa</label>
+                <ion-input v-model="enemyForm.initiative" class="clean-input" fill="outline" type="number" />
+              </div>
+              <div class="form-field">
+                <label>Bonus iniziativa</label>
+                <ion-input v-model="enemyForm.initiative_bonus" class="clean-input" fill="outline" type="number" />
+              </div>
+              <div class="form-field">
+                <label>Condizione</label>
+                <label class="auth-check"><ion-checkbox v-model="enemyForm.is_slow" /><span>Lento</span></label>
+              </div>
+            </div>
+            <div class="form-actions">
               <ion-button class="action-button" expand="block" :disabled="loading || !enemyForm.name" @click="addCombatant">Aggiungi combattente</ion-button>
             </div>
           </article>
 
-          <article class="fantasy-card entity-card">
-            <div>
-              <p class="entity-name">Applica effetto</p>
-              <p class="entity-meta">Gli effetti temporanei scalano a ogni nuovo round.</p>
-              <ion-select v-model="effectForm.combatant_id" label="Combattente" label-placement="stacked" fill="outline">
-                <ion-select-option v-for="combatant in combatants" :key="combatant.id" :value="combatant.id">
-                  {{ combatant.name }}
-                </ion-select-option>
-              </ion-select>
-              <ion-input v-model="effectForm.name" label="Effetto" label-placement="stacked" fill="outline" />
-              <ion-input v-model="effectForm.remaining_rounds" label="Round rimanenti" label-placement="stacked" fill="outline" type="number" />
-              <label class="auth-check"><ion-checkbox v-model="effectForm.is_permanent" /><span>Permanente</span></label>
+          <article class="fantasy-card form-card">
+            <p class="entity-name">Applica effetto</p>
+            <p class="entity-meta">Gli effetti temporanei scalano a ogni nuovo round.</p>
+            <div class="form-grid">
+              <div class="form-field">
+                <label>Combattente</label>
+                <ion-select v-model="effectForm.combatant_id" class="clean-input" fill="outline">
+                  <ion-select-option v-for="combatant in combatants" :key="combatant.id" :value="combatant.id">
+                    {{ combatant.name }}
+                  </ion-select-option>
+                </ion-select>
+              </div>
+              <div class="form-field">
+                <label>Effetto</label>
+                <ion-input v-model="effectForm.name" class="clean-input" fill="outline" />
+              </div>
+              <div class="form-field">
+                <label>Round rimanenti</label>
+                <ion-input v-model="effectForm.remaining_rounds" class="clean-input" fill="outline" type="number" />
+              </div>
+              <div class="form-field">
+                <label>Durata</label>
+                <label class="auth-check"><ion-checkbox v-model="effectForm.is_permanent" /><span>Permanente</span></label>
+              </div>
+            </div>
+            <div class="form-actions">
               <ion-button class="action-button" expand="block" :disabled="loading || !effectForm.combatant_id || !effectForm.name" @click="addEffect">Applica effetto</ion-button>
             </div>
           </article>
@@ -88,7 +132,7 @@
       </section>
 
       <section class="section-block" v-if="message || error">
-        <article class="fantasy-card entity-card">
+        <article class="fantasy-card list-card">
           <p class="auth-success" v-if="message">{{ message }}</p>
           <p class="auth-error" v-if="error">{{ error }}</p>
         </article>
@@ -96,10 +140,10 @@
 
       <section class="section-block" v-if="encounters.length > 1">
         <div class="entity-list">
-          <article class="fantasy-card entity-card" v-for="row in encounters" :key="row.id">
+          <article class="fantasy-card list-card" v-for="row in encounters" :key="row.id">
             <div>
-              <p class="entity-name">{{ row.name }}</p>
-              <p class="entity-meta">Round {{ row.current_round }} · {{ row.combatants_count || 0 }} combattenti</p>
+              <p class="list-title">{{ row.name }}</p>
+              <p class="list-meta">Round {{ row.current_round }} · {{ row.combatants_count || 0 }} combattenti</p>
               <ion-button v-if="!isActive(row)" class="action-button" expand="block" fill="outline" :disabled="loading" @click="activateEncounter(row.id)">Rendi attivo</ion-button>
             </div>
           </article>
@@ -108,15 +152,10 @@
 
       <section class="section-block">
         <div class="entity-list" v-if="combatants.length">
-          <article
-            class="fantasy-card entity-card"
-            :class="{ 'turn-card': isCurrentTurn(combatant, index) }"
-            v-for="(combatant, index) in combatants"
-            :key="combatant.id"
-          >
+          <article class="fantasy-card list-card" :class="{ 'turn-card': isCurrentTurn(combatant, index) }" v-for="(combatant, index) in combatants" :key="combatant.id">
             <div>
-              <p class="entity-name">{{ combatant.name }}</p>
-              <p class="entity-meta">{{ combatantLabel(combatant) }} · iniziativa {{ combatant.initiative }} · bonus {{ combatant.initiative_bonus }}</p>
+              <p class="list-title">{{ combatant.name }}</p>
+              <p class="list-meta">{{ combatantLabel(combatant) }} · iniziativa {{ combatant.initiative }} · bonus {{ combatant.initiative_bonus }}</p>
               <div class="badge-row">
                 <span class="fantasy-badge" v-if="isCurrentTurn(combatant, index)">Turno corrente</span>
                 <span class="fantasy-badge" v-if="hasActed(combatant)">Ha agito</span>
@@ -134,10 +173,10 @@
           </article>
         </div>
 
-        <article class="fantasy-card entity-card" v-else>
+        <article class="fantasy-card list-card" v-else>
           <div>
-            <p class="entity-name">Nessun combattente</p>
-            <p class="entity-meta">Crea un encounter o aggiungi personaggi/avversari.</p>
+            <p class="list-title">Nessun combattente</p>
+            <p class="list-meta">Crea un encounter o aggiungi personaggi/avversari.</p>
           </div>
         </article>
       </section>
