@@ -14,41 +14,65 @@
       </section>
 
       <section class="section-block">
-        <article class="fantasy-card entity-card">
-          <div>
-            <p class="entity-name">{{ form.id ? 'Modifica sessione' : 'Nuova sessione' }}</p>
-            <ion-input v-model="form.session_number" label="Numero sessione" label-placement="stacked" fill="outline" type="number" />
-            <ion-input v-model="form.title" label="Titolo" label-placement="stacked" fill="outline" />
-            <ion-input v-model="form.real_date" label="Data reale" label-placement="stacked" fill="outline" type="date" />
-            <ion-input v-model="form.world_date" label="Data nel mondo" label-placement="stacked" fill="outline" />
-            <ion-textarea v-model="form.summary" label="Riassunto pubblico" label-placement="stacked" fill="outline" :auto-grow="true" />
-            <ion-textarea v-model="form.master_notes" label="Note master" label-placement="stacked" fill="outline" :auto-grow="true" />
-            <ion-select v-model="form.status" label="Stato" label-placement="stacked" fill="outline">
-              <ion-select-option value="draft">Bozza</ion-select-option>
-              <ion-select-option value="published">Pubblicata</ion-select-option>
-              <ion-select-option value="archived">Archiviata</ion-select-option>
-            </ion-select>
-            <ion-select v-model="form.visibility" label="Visibilità" label-placement="stacked" fill="outline">
-              <ion-select-option value="party">Party</ion-select-option>
-              <ion-select-option value="master">Solo master</ion-select-option>
-              <ion-select-option value="private">Privata</ion-select-option>
-              <ion-select-option value="custom">Personalizzata</ion-select-option>
-            </ion-select>
-            <p class="auth-error" v-if="error">{{ error }}</p>
-            <p class="auth-success" v-if="message">{{ message }}</p>
-            <div class="action-row compact-actions">
-              <ion-button class="action-button" expand="block" :disabled="loading || !form.title" @click="saveSession">{{ form.id ? 'Salva sessione' : 'Crea sessione' }}</ion-button>
-              <ion-button class="action-button" expand="block" fill="outline" :disabled="loading" @click="resetForm">Annulla</ion-button>
+        <article class="fantasy-card form-card">
+          <p class="entity-name">{{ form.id ? 'Modifica sessione' : 'Nuova sessione' }}</p>
+          <div class="form-grid">
+            <div class="form-field">
+              <label>Numero sessione</label>
+              <ion-input v-model="form.session_number" class="clean-input" fill="outline" type="number" />
             </div>
+            <div class="form-field">
+              <label>Titolo</label>
+              <ion-input v-model="form.title" class="clean-input" fill="outline" />
+            </div>
+            <div class="form-field">
+              <label>Data reale</label>
+              <ion-input v-model="form.real_date" class="clean-input" fill="outline" type="date" />
+            </div>
+            <div class="form-field">
+              <label>Data nel mondo</label>
+              <ion-input v-model="form.world_date" class="clean-input" fill="outline" />
+            </div>
+            <div class="form-field is-full">
+              <label>Riassunto pubblico</label>
+              <ion-textarea v-model="form.summary" class="clean-input" fill="outline" :auto-grow="true" />
+            </div>
+            <div class="form-field is-full">
+              <label>Note master</label>
+              <ion-textarea v-model="form.master_notes" class="clean-input" fill="outline" :auto-grow="true" />
+            </div>
+            <div class="form-field">
+              <label>Stato</label>
+              <ion-select v-model="form.status" class="clean-input" fill="outline">
+                <ion-select-option value="draft">Bozza</ion-select-option>
+                <ion-select-option value="published">Pubblicata</ion-select-option>
+                <ion-select-option value="archived">Archiviata</ion-select-option>
+              </ion-select>
+            </div>
+            <div class="form-field">
+              <label>Visibilità</label>
+              <ion-select v-model="form.visibility" class="clean-input" fill="outline">
+                <ion-select-option value="party">Party</ion-select-option>
+                <ion-select-option value="master">Solo master</ion-select-option>
+                <ion-select-option value="private">Privata</ion-select-option>
+                <ion-select-option value="custom">Personalizzata</ion-select-option>
+              </ion-select>
+            </div>
+          </div>
+          <p class="auth-error" v-if="error">{{ error }}</p>
+          <p class="auth-success" v-if="message">{{ message }}</p>
+          <div class="form-actions">
+            <ion-button class="action-button" expand="block" :disabled="loading || !form.title" @click="saveSession">{{ form.id ? 'Salva sessione' : 'Crea sessione' }}</ion-button>
+            <ion-button class="action-button" expand="block" fill="outline" :disabled="loading" @click="resetForm">Annulla</ion-button>
           </div>
         </article>
       </section>
 
       <section class="section-block" v-if="selectedSession">
-        <article class="fantasy-card entity-card">
+        <article class="fantasy-card list-card">
           <div>
-            <p class="entity-name">Stream #{{ selectedSession.session_number }} · {{ selectedSession.title }}</p>
-            <p class="entity-meta">{{ dateLabel(selectedSession) }}<span v-if="selectedSession.world_date"> · {{ selectedSession.world_date }}</span></p>
+            <p class="list-title">Stream #{{ selectedSession.session_number }} · {{ selectedSession.title }}</p>
+            <p class="list-meta">{{ dateLabel(selectedSession) }}<span v-if="selectedSession.world_date"> · {{ selectedSession.world_date }}</span></p>
             <div class="badge-row">
               <span class="fantasy-badge">{{ statusLabel(selectedSession.status) }}</span>
               <span class="fantasy-badge">{{ visibilityLabel(selectedSession.visibility) }}</span>
@@ -58,17 +82,17 @@
         </article>
 
         <div class="entity-list">
-          <article class="fantasy-card entity-card" v-if="selectedSession.summary">
-            <div><p class="entity-name">Riassunto</p><p class="entity-meta note-content">{{ selectedSession.summary }}</p></div>
+          <article class="fantasy-card list-card" v-if="selectedSession.summary">
+            <div><p class="list-title">Riassunto</p><p class="list-meta note-content">{{ selectedSession.summary }}</p></div>
           </article>
-          <article class="fantasy-card entity-card" v-if="selectedSession.master_notes">
-            <div><p class="entity-name">Note master</p><p class="entity-meta note-content">{{ selectedSession.master_notes }}</p></div>
+          <article class="fantasy-card list-card" v-if="selectedSession.master_notes">
+            <div><p class="list-title">Note master</p><p class="list-meta note-content">{{ selectedSession.master_notes }}</p></div>
           </article>
-          <article class="fantasy-card entity-card" v-for="note in selectedNotes" :key="note.id">
+          <article class="fantasy-card list-card" v-for="note in selectedNotes" :key="note.id">
             <div>
-              <p class="entity-name">{{ note.title || labelForType(note.note_type) }}</p>
-              <p class="entity-meta">{{ labelForType(note.note_type) }} · {{ labelForScope(note.share_scope) }} · {{ authorLabel(note) }} · {{ formatDateTime(note.created_at) }}</p>
-              <p class="entity-meta note-content">{{ note.content }}</p>
+              <p class="list-title">{{ note.title || labelForType(note.note_type) }}</p>
+              <p class="list-meta">{{ labelForType(note.note_type) }} · {{ labelForScope(note.share_scope) }} · {{ authorLabel(note) }} · {{ formatDateTime(note.created_at) }}</p>
+              <p class="list-meta note-content">{{ note.content }}</p>
               <div class="badge-row">
                 <span class="fantasy-badge" v-if="note.master_flag !== 'none'">{{ labelForFlag(note.master_flag) }}</span>
                 <span class="fantasy-badge" v-if="note.corrected_at">Corretta</span>
@@ -80,12 +104,12 @@
 
       <section class="section-block">
         <div class="entity-list" v-if="sessions.length">
-          <article class="fantasy-card entity-card" v-for="session in sessions" :key="session.id">
+          <article class="fantasy-card list-card" v-for="session in sessions" :key="session.id">
             <div>
-              <p class="entity-name">#{{ session.session_number }} · {{ session.title }}</p>
-              <p class="entity-meta">{{ dateLabel(session) }}<span v-if="session.world_date"> · {{ session.world_date }}</span> · {{ statusLabel(session.status) }}</p>
-              <p class="entity-meta" v-if="session.summary">{{ session.summary }}</p>
-              <p class="entity-meta" v-else>Nessun riassunto pubblico.</p>
+              <p class="list-title">#{{ session.session_number }} · {{ session.title }}</p>
+              <p class="list-meta">{{ dateLabel(session) }}<span v-if="session.world_date"> · {{ session.world_date }}</span> · {{ statusLabel(session.status) }}</p>
+              <p class="list-meta" v-if="session.summary">{{ session.summary }}</p>
+              <p class="list-meta" v-else>Nessun riassunto pubblico.</p>
               <div class="badge-row"><span class="fantasy-badge">{{ session.player_notes_count || 0 }} note</span><span class="fantasy-badge" v-if="session.master_notes">Note master</span></div>
               <div class="badge-row">
                 <ion-button size="small" fill="outline" :disabled="loading" @click="openStream(session.id)">Stream</ion-button>
@@ -95,7 +119,7 @@
             </div>
           </article>
         </div>
-        <article class="fantasy-card entity-card" v-else><div><p class="entity-name">Nessuna sessione</p><p class="entity-meta">Crea la prima sessione.</p></div></article>
+        <article class="fantasy-card list-card" v-else><div><p class="list-title">Nessuna sessione</p><p class="list-meta">Crea la prima sessione.</p></div></article>
       </section>
     </ion-content>
   </ion-page>
