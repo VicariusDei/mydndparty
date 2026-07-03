@@ -14,90 +14,108 @@
       </section>
 
       <section class="section-block">
-        <article class="fantasy-card entity-card">
-          <div>
-            <p class="entity-name">{{ form.id ? 'Correggi nota' : 'Nuova nota rapida' }}</p>
-            <p class="entity-meta">Le note entrano subito nella cronologia secondo la visibilità scelta.</p>
+        <article class="fantasy-card form-card">
+          <p class="entity-name">{{ form.id ? 'Correggi nota' : 'Nuova nota rapida' }}</p>
+          <p class="entity-meta">Le note entrano subito nella cronologia secondo la visibilità scelta.</p>
 
-            <ion-select v-model="form.session_id" label="Sessione" label-placement="stacked" fill="outline">
-              <ion-select-option :value="0">Nessuna sessione specifica</ion-select-option>
-              <ion-select-option v-for="session in sessions" :key="session.id" :value="session.id">
-                #{{ session.session_number }} · {{ session.title }}
-              </ion-select-option>
-            </ion-select>
-
-            <ion-input v-model="form.title" label="Titolo opzionale" label-placement="stacked" fill="outline" />
-            <ion-textarea v-model="form.content" label="Nota" label-placement="stacked" fill="outline" :auto-grow="true" />
-
-            <ion-select v-model="form.note_type" label="Tipo" label-placement="stacked" fill="outline">
-              <ion-select-option value="note">Nota</ion-select-option>
-              <ion-select-option value="npc">PNG</ion-select-option>
-              <ion-select-option value="place">Luogo</ion-select-option>
-              <ion-select-option value="quest">Quest</ion-select-option>
-              <ion-select-option value="loot">Loot</ion-select-option>
-              <ion-select-option value="question">Domanda</ion-select-option>
-              <ion-select-option value="rules">Regole</ion-select-option>
-              <ion-select-option value="idea">Idea</ion-select-option>
-              <ion-select-option value="scene">Scena</ion-select-option>
-              <ion-select-option value="decision">Decisione</ion-select-option>
-            </ion-select>
-
-            <ion-select v-model="form.share_scope" label="Visibilità" label-placement="stacked" fill="outline">
-              <ion-select-option value="party">Tutto il party</ion-select-option>
-              <ion-select-option value="private">Privata autore + master</ion-select-option>
-              <ion-select-option value="restricted">Ristretta</ion-select-option>
-              <ion-select-option value="master">Solo master</ion-select-option>
-            </ion-select>
-
-            <ion-select
-              v-if="form.share_scope === 'restricted'"
-              v-model="form.recipient_party_member_ids"
-              label="Destinatari"
-              label-placement="stacked"
-              fill="outline"
-              multiple
-            >
-              <ion-select-option v-for="member in partyMembers" :key="member.id" :value="member.id">
-                {{ member.character_name }} · {{ member.player_name }}
-              </ion-select-option>
-            </ion-select>
-
-            <ion-select v-model="form.author_party_member_id" label="Scritta come" label-placement="stacked" fill="outline">
-              <ion-select-option :value="0">Utente / master</ion-select-option>
-              <ion-select-option v-for="member in partyMembers" :key="member.id" :value="member.id">
-                {{ member.character_name }} · {{ member.player_name }}
-              </ion-select-option>
-            </ion-select>
-
-            <ion-select v-model="form.master_flag" label="Flag master" label-placement="stacked" fill="outline">
-              <ion-select-option value="none">Nessuno</ion-select-option>
-              <ion-select-option value="needs_review">Da rivedere</ion-select-option>
-              <ion-select-option value="verified">Verificata</ion-select-option>
-              <ion-select-option value="spoiler">Spoiler</ion-select-option>
-              <ion-select-option value="incorrect">Errata</ion-select-option>
-            </ion-select>
-
-            <p class="auth-error" v-if="error">{{ error }}</p>
-            <p class="auth-success" v-if="message">{{ message }}</p>
-
-            <div class="action-row compact-actions">
-              <ion-button class="action-button" expand="block" :disabled="loading || !form.content" @click="saveNote">
-                {{ form.id ? 'Salva correzione' : 'Pubblica nota' }}
-              </ion-button>
-              <ion-button class="action-button" expand="block" fill="outline" :disabled="loading" @click="resetForm">Annulla</ion-button>
+          <div class="form-grid">
+            <div class="form-field">
+              <label>Sessione</label>
+              <ion-select v-model="form.session_id" class="clean-input" fill="outline">
+                <ion-select-option :value="0">Nessuna sessione specifica</ion-select-option>
+                <ion-select-option v-for="session in sessions" :key="session.id" :value="session.id">
+                  #{{ session.session_number }} · {{ session.title }}
+                </ion-select-option>
+              </ion-select>
             </div>
+
+            <div class="form-field">
+              <label>Titolo opzionale</label>
+              <ion-input v-model="form.title" class="clean-input" fill="outline" />
+            </div>
+
+            <div class="form-field is-full">
+              <label>Nota</label>
+              <ion-textarea v-model="form.content" class="clean-input" fill="outline" :auto-grow="true" />
+            </div>
+
+            <div class="form-field">
+              <label>Tipo</label>
+              <ion-select v-model="form.note_type" class="clean-input" fill="outline">
+                <ion-select-option value="note">Nota</ion-select-option>
+                <ion-select-option value="npc">PNG</ion-select-option>
+                <ion-select-option value="place">Luogo</ion-select-option>
+                <ion-select-option value="quest">Quest</ion-select-option>
+                <ion-select-option value="loot">Loot</ion-select-option>
+                <ion-select-option value="question">Domanda</ion-select-option>
+                <ion-select-option value="rules">Regole</ion-select-option>
+                <ion-select-option value="idea">Idea</ion-select-option>
+                <ion-select-option value="scene">Scena</ion-select-option>
+                <ion-select-option value="decision">Decisione</ion-select-option>
+              </ion-select>
+            </div>
+
+            <div class="form-field">
+              <label>Visibilità</label>
+              <ion-select v-model="form.share_scope" class="clean-input" fill="outline">
+                <ion-select-option value="party">Tutto il party</ion-select-option>
+                <ion-select-option value="private">Privata autore + master</ion-select-option>
+                <ion-select-option value="restricted">Ristretta</ion-select-option>
+                <ion-select-option value="master">Solo master</ion-select-option>
+              </ion-select>
+            </div>
+
+            <div class="form-field is-full" v-if="form.share_scope === 'restricted'">
+              <label>Destinatari</label>
+              <ion-select v-model="form.recipient_party_member_ids" class="clean-input" fill="outline" multiple>
+                <ion-select-option v-for="member in partyMembers" :key="member.id" :value="member.id">
+                  {{ member.character_name }} · {{ member.player_name }}
+                </ion-select-option>
+              </ion-select>
+            </div>
+
+            <div class="form-field">
+              <label>Scritta come</label>
+              <ion-select v-model="form.author_party_member_id" class="clean-input" fill="outline">
+                <ion-select-option :value="0">Utente / master</ion-select-option>
+                <ion-select-option v-for="member in partyMembers" :key="member.id" :value="member.id">
+                  {{ member.character_name }} · {{ member.player_name }}
+                </ion-select-option>
+              </ion-select>
+            </div>
+
+            <div class="form-field">
+              <label>Flag master</label>
+              <ion-select v-model="form.master_flag" class="clean-input" fill="outline">
+                <ion-select-option value="none">Nessuno</ion-select-option>
+                <ion-select-option value="needs_review">Da rivedere</ion-select-option>
+                <ion-select-option value="verified">Verificata</ion-select-option>
+                <ion-select-option value="spoiler">Spoiler</ion-select-option>
+                <ion-select-option value="incorrect">Errata</ion-select-option>
+              </ion-select>
+            </div>
+          </div>
+
+          <p class="auth-error" v-if="error">{{ error }}</p>
+          <p class="auth-success" v-if="message">{{ message }}</p>
+
+          <div class="form-actions">
+            <ion-button class="action-button" expand="block" :disabled="loading || !form.content" @click="saveNote">
+              {{ form.id ? 'Salva correzione' : 'Pubblica nota' }}
+            </ion-button>
+            <ion-button class="action-button" expand="block" fill="outline" :disabled="loading" @click="resetForm">Annulla</ion-button>
           </div>
         </article>
       </section>
 
       <section class="section-block">
         <div class="entity-list" v-if="notes.length">
-          <article class="fantasy-card entity-card" v-for="note in notes" :key="note.id">
+          <article class="fantasy-card list-card" v-for="note in notes" :key="note.id">
             <div>
-              <p class="entity-name">{{ note.title || labelForType(note.note_type) }}</p>
-              <p class="entity-meta">{{ labelForType(note.note_type) }} · {{ labelForScope(note.share_scope) }} · {{ authorLabel(note) }} · {{ formatDate(note.created_at) }}</p>
-              <p class="entity-meta" v-if="note.session_title">Sessione #{{ note.session_number }} · {{ note.session_title }}</p>
-              <p class="entity-meta note-content">{{ note.content }}</p>
+              <p class="list-title">{{ note.title || labelForType(note.note_type) }}</p>
+              <p class="list-meta">{{ labelForType(note.note_type) }} · {{ labelForScope(note.share_scope) }} · {{ authorLabel(note) }} · {{ formatDate(note.created_at) }}</p>
+              <p class="list-meta" v-if="note.session_title">Sessione #{{ note.session_number }} · {{ note.session_title }}</p>
+              <p class="list-meta note-content">{{ note.content }}</p>
 
               <div class="badge-row">
                 <span class="fantasy-badge">{{ note.status }}</span>
@@ -114,10 +132,10 @@
           </article>
         </div>
 
-        <article class="fantasy-card entity-card" v-else>
+        <article class="fantasy-card list-card" v-else>
           <div>
-            <p class="entity-name">Nessuna nota</p>
-            <p class="entity-meta">Inserisci la prima nota della campagna o della prossima sessione.</p>
+            <p class="list-title">Nessuna nota</p>
+            <p class="list-meta">Inserisci la prima nota della campagna o della prossima sessione.</p>
           </div>
         </article>
       </section>
