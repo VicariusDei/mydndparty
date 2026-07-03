@@ -10,7 +10,7 @@ final class SessionsRepository
     {
         $limit = max(1, min($limit, 300));
         $stmt = $this->pdo->prepare(
-            'SELECT s.id, s.campaign_id, s.session_number, s.title, s.real_date, s.world_date,
+            "SELECT s.id, s.campaign_id, s.session_number, s.title, s.real_date, s.world_date,
                     s.summary, s.master_notes, s.status, s.visibility, s.created_by_user_id,
                     s.created_at, s.updated_at,
                     u.display_name AS created_by_display_name,
@@ -18,13 +18,13 @@ final class SessionsRepository
                     COUNT(n.id) AS player_notes_count
              FROM mdp_sessions s
              LEFT JOIN mdp_users u ON u.id = s.created_by_user_id
-             LEFT JOIN mdp_player_notes n ON n.session_id = s.id AND n.status <> ''deleted''
+             LEFT JOIN mdp_player_notes n ON n.session_id = s.id AND n.status <> 'deleted'
              WHERE s.campaign_id = :campaign_id
              GROUP BY s.id, s.campaign_id, s.session_number, s.title, s.real_date, s.world_date,
                       s.summary, s.master_notes, s.status, s.visibility, s.created_by_user_id,
                       s.created_at, s.updated_at, u.display_name, u.username
              ORDER BY s.session_number DESC, s.id DESC
-             LIMIT ' . $limit
+             LIMIT " . $limit
         );
         $stmt->execute(['campaign_id' => $campaignId]);
 
