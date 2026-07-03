@@ -12,7 +12,7 @@
           <div class="brand-die">d20</div>
           <div>
             <p class="menu-title">Memoria viva</p>
-            <p class="menu-subtitle">Campagna, sessioni, note e party.</p>
+            <p class="menu-subtitle">Gruppi, campagne, sessioni e note.</p>
           </div>
         </div>
 
@@ -58,6 +58,7 @@ import {
 
 const menuItems = [
   { label: 'Dashboard', to: '/tabs/dashboard', icon: homeOutline },
+  { label: 'Gruppi', to: '/tabs/groups', icon: peopleOutline },
   { label: 'Sessioni / Diario', to: '/tabs/sessions', icon: bookOutline },
   { label: 'Note giocatori', to: '/tabs/notes', icon: documentTextOutline },
   { label: 'Campagne', to: '/tabs/campaigns', icon: mapOutline },
