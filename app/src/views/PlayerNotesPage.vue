@@ -10,7 +10,7 @@
       <section class="hero-card">
         <p class="hero-eyebrow">Memoria di sessione</p>
         <h1 class="hero-title">Note giocatori</h1>
-        <p class="hero-subtitle">Appunti subito visibili, con visibilità controllata e correzione successiva del master.</p>
+        <p class="hero-subtitle">Appunti subito visibili, collegabili a una sessione e correggibili dal master.</p>
       </section>
 
       <section class="section-block">
@@ -18,6 +18,13 @@
           <div>
             <p class="entity-name">{{ form.id ? 'Correggi nota' : 'Nuova nota rapida' }}</p>
             <p class="entity-meta">Le note entrano subito nella cronologia secondo la visibilità scelta.</p>
+
+            <ion-select v-model="form.session_id" label="Sessione" label-placement="stacked" fill="outline">
+              <ion-select-option :value="0">Nessuna sessione specifica</ion-select-option>
+              <ion-select-option v-for="session in sessions" :key="session.id" :value="session.id">
+                #{{ session.session_number }} · {{ session.title }}
+              </ion-select-option>
+            </ion-select>
 
             <ion-input v-model="form.title" label="Titolo opzionale" label-placement="stacked" fill="outline" />
             <ion-textarea v-model="form.content" label="Nota" label-placement="stacked" fill="outline" :auto-grow="true" />
@@ -89,6 +96,7 @@
             <div>
               <p class="entity-name">{{ note.title || labelForType(note.note_type) }}</p>
               <p class="entity-meta">{{ labelForType(note.note_type) }} · {{ labelForScope(note.share_scope) }} · {{ authorLabel(note) }} · {{ formatDate(note.created_at) }}</p>
+              <p class="entity-meta" v-if="note.session_title">Sessione #{{ note.session_number }} · {{ note.session_title }}</p>
               <p class="entity-meta note-content">{{ note.content }}</p>
 
               <div class="badge-row">
@@ -122,7 +130,7 @@ import { onMounted, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { IonButton, IonContent, IonHeader, IonInput, IonPage, IonSelect, IonSelectOption, IonTextarea, IonTitle, IonToolbar } from '@ionic/vue';
 import { apiGet, apiPost } from '../services/api';
-import type { PartyMember, PlayerNote } from '../types/domain';
+import type { PartyMember, PlayerNote, Session } from '../types/domain';
 
 type PlayerNotesPayload = {
   player_notes: PlayerNote[];
@@ -132,15 +140,22 @@ type PartyPayload = {
   party_members: PartyMember[];
 };
 
+type SessionsPayload = {
+  sessions: Session[];
+  latest_session: Session | null;
+};
+
 const router = useRouter();
 const notes = ref<PlayerNote[]>([]);
 const partyMembers = ref<PartyMember[]>([]);
+const sessions = ref<Session[]>([]);
 const loading = ref(false);
 const error = ref('');
 const message = ref('');
 
 const form = reactive({
   id: 0,
+  session_id: 0,
   title: '',
   content: '',
   note_type: 'note',
@@ -170,6 +185,16 @@ async function loadParty() {
   }
 }
 
+async function loadSessions() {
+  const response = await apiGet<SessionsPayload>('sessions/list');
+  if (response.ok) {
+    sessions.value = response.data?.sessions || [];
+    if (!form.session_id && response.data?.latest_session) {
+      form.session_id = response.data.latest_session.id;
+    }
+  }
+}
+
 async function runNoteAction(route: string, payload: unknown, success: string) {
   loading.value = true;
   error.value = '';
@@ -190,6 +215,7 @@ async function runNoteAction(route: string, payload: unknown, success: string) {
 function payload() {
   return {
     id: form.id,
+    session_id: Number(form.session_id) || 0,
     title: form.title,
     content: form.content,
     note_type: form.note_type,
@@ -215,6 +241,7 @@ async function saveNote() {
 
 function editNote(note: PlayerNote) {
   form.id = note.id;
+  form.session_id = note.session_id || 0;
   form.title = note.title || '';
   form.content = note.content;
   form.note_type = note.note_type || 'note';
@@ -236,7 +263,9 @@ async function deleteNote(id: number) {
 }
 
 function resetForm() {
+  const latest = sessions.value[0];
   form.id = 0;
+  form.session_id = latest?.id || 0;
   form.title = '';
   form.content = '';
   form.note_type = 'note';
@@ -281,6 +310,6 @@ function formatDate(value: string) {
 }
 
 onMounted(async () => {
-  await Promise.all([loadNotes(), loadParty()]);
+  await Promise.all([loadNotes(), loadParty(), loadSessions()]);
 });
 </script>
