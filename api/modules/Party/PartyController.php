@@ -11,6 +11,55 @@ final class PartyController
 
     public function list(): void
     {
+        $campaignId = $this->activeCampaignId();
+        if ($campaignId <= 0) {
+            $this->emptyPayload();
+        }
+
+        $this->respondWithState($campaignId);
+    }
+
+    public function create(): void
+    {
+        $userId = Auth::userId($this->config);
+        $campaignId = $this->requireCampaign();
+        $body = Request::jsonBody();
+        $data = $this->payload($body, $campaignId, $userId);
+
+        $this->party->create($data);
+        $this->respondWithState($campaignId);
+    }
+
+    public function update(): void
+    {
+        $userId = Auth::userId($this->config);
+        $campaignId = $this->requireCampaign();
+        $body = Request::jsonBody();
+        $memberId = (int)($body['id'] ?? 0);
+        if ($memberId <= 0) {
+            Response::error('Personaggio obbligatorio', 422);
+        }
+
+        $data = $this->payload($body, $campaignId, $userId);
+        $this->party->update($campaignId, $memberId, $data);
+        $this->respondWithState($campaignId);
+    }
+
+    public function delete(): void
+    {
+        $campaignId = $this->requireCampaign();
+        $body = Request::jsonBody();
+        $memberId = (int)($body['id'] ?? 0);
+        if ($memberId <= 0) {
+            Response::error('Personaggio obbligatorio', 422);
+        }
+
+        $this->party->deleteIfUnused($campaignId, $memberId);
+        $this->respondWithState($campaignId);
+    }
+
+    private function activeCampaignId(): int
+    {
         $userId = Auth::userId($this->config);
         $campaignId = (int)($_GET['campaign_id'] ?? 0);
 
@@ -19,32 +68,21 @@ final class PartyController
             $campaignId = $active ? (int)$active['id'] : 0;
         }
 
-        if ($campaignId <= 0) {
-            Response::ok([
-                'party_members' => [],
-            ]);
-        }
-
-        Response::ok([
-            'party_members' => $this->party->listByCampaign($campaignId),
-        ]);
+        return $campaignId;
     }
 
-    public function create(): void
+    private function requireCampaign(): int
     {
-        $userId = Auth::userId($this->config);
-        $body = Request::jsonBody();
-
-        $campaignId = (int)($body['campaign_id'] ?? 0);
-        if ($campaignId <= 0) {
-            $active = $this->campaigns->activeByUser($userId);
-            $campaignId = $active ? (int)$active['id'] : 0;
-        }
-
+        $campaignId = $this->activeCampaignId();
         if ($campaignId <= 0) {
             Response::error('Nessuna campagna attiva disponibile', 422);
         }
 
+        return $campaignId;
+    }
+
+    private function payload(array $body, int $campaignId, int $userId): array
+    {
         $characterName = trim((string)($body['character_name'] ?? ''));
         $playerName = trim((string)($body['player_name'] ?? ''));
 
@@ -52,7 +90,7 @@ final class PartyController
             Response::error('Nome giocatore e nome personaggio sono obbligatori', 422);
         }
 
-        $id = $this->party->create([
+        return [
             'campaign_id' => $campaignId,
             'user_id' => $userId,
             'player_name' => $playerName,
@@ -61,10 +99,20 @@ final class PartyController
             'ancestry_name' => trim((string)($body['ancestry_name'] ?? '')) ?: null,
             'motto' => trim((string)($body['motto'] ?? '')) ?: null,
             'initiative_bonus' => (int)($body['initiative_bonus'] ?? 0),
-        ]);
+        ];
+    }
 
+    private function respondWithState(int $campaignId): void
+    {
         Response::ok([
-            'id' => $id,
+            'party_members' => $this->party->listByCampaign($campaignId),
+        ]);
+    }
+
+    private function emptyPayload(): void
+    {
+        Response::ok([
+            'party_members' => [],
         ]);
     }
 }
