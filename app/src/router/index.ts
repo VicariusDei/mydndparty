@@ -35,6 +35,10 @@ const routes = [
         component: () => import('../views/DashboardPage.vue')
       },
       {
+        path: 'sessions',
+        component: () => import('../views/SessionsPage.vue')
+      },
+      {
         path: 'notes',
         component: () => import('../views/PlayerNotesPage.vue')
       },
