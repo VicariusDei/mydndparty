@@ -14,34 +14,40 @@
       </section>
 
       <section class="section-block">
-        <article class="fantasy-card entity-card">
-          <div>
-            <p class="entity-name">{{ form.id ? 'Modifica campagna' : 'Nuova campagna' }}</p>
-            <p class="entity-meta">Le note sono il diario master iniziale. Più avanti lo separeremo in eventi strutturati.</p>
-            <ion-input v-model="form.name" label="Nome campagna" label-placement="stacked" fill="outline" />
-            <ion-textarea v-model="form.notes" label="Note / diario" label-placement="stacked" fill="outline" :auto-grow="true" />
-
-            <p class="auth-error" v-if="error">{{ error }}</p>
-            <p class="auth-success" v-if="message">{{ message }}</p>
-
-            <div class="action-row compact-actions">
-              <ion-button class="action-button" expand="block" :disabled="loading || !form.name" @click="saveCampaign">
-                {{ form.id ? 'Salva diario' : 'Crea campagna' }}
-              </ion-button>
-              <ion-button class="action-button" expand="block" fill="outline" :disabled="loading" @click="resetForm">Annulla</ion-button>
+        <article class="fantasy-card form-card">
+          <p class="entity-name">{{ form.id ? 'Modifica campagna' : 'Nuova campagna' }}</p>
+          <p class="entity-meta">Le note sono il diario master iniziale. Più avanti lo separeremo in eventi strutturati.</p>
+          <div class="form-grid">
+            <div class="form-field">
+              <label>Nome campagna</label>
+              <ion-input v-model="form.name" class="clean-input" fill="outline" />
             </div>
+            <div class="form-field is-full">
+              <label>Note / diario</label>
+              <ion-textarea v-model="form.notes" class="clean-input" fill="outline" :auto-grow="true" />
+            </div>
+          </div>
+
+          <p class="auth-error" v-if="error">{{ error }}</p>
+          <p class="auth-success" v-if="message">{{ message }}</p>
+
+          <div class="form-actions">
+            <ion-button class="action-button" expand="block" :disabled="loading || !form.name" @click="saveCampaign">
+              {{ form.id ? 'Salva diario' : 'Crea campagna' }}
+            </ion-button>
+            <ion-button class="action-button" expand="block" fill="outline" :disabled="loading" @click="resetForm">Annulla</ion-button>
           </div>
         </article>
       </section>
 
       <section class="section-block">
         <div class="entity-list" v-if="campaigns.length">
-          <article class="fantasy-card entity-card" v-for="campaign in campaigns" :key="campaign.id">
+          <article class="fantasy-card list-card" v-for="campaign in campaigns" :key="campaign.id">
             <div>
-              <p class="entity-name">{{ campaign.name }}</p>
-              <p class="entity-meta">{{ isActive(campaign) ? 'Campagna attiva' : 'Campagna non attiva' }}</p>
-              <p class="entity-meta" v-if="campaign.notes">{{ campaign.notes }}</p>
-              <p class="entity-meta" v-else>Nessuna nota reale presente.</p>
+              <p class="list-title">{{ campaign.name }}</p>
+              <p class="list-meta">{{ isActive(campaign) ? 'Campagna attiva' : 'Campagna non attiva' }}</p>
+              <p class="list-meta" v-if="campaign.notes">{{ campaign.notes }}</p>
+              <p class="list-meta" v-else>Nessuna nota reale presente.</p>
               <div class="badge-row">
                 <span class="fantasy-badge" v-if="isActive(campaign)">Attiva</span>
                 <span class="fantasy-badge" v-if="campaign.updated_at">Aggiornata</span>
@@ -55,10 +61,10 @@
           </article>
         </div>
 
-        <article class="fantasy-card entity-card" v-else>
+        <article class="fantasy-card list-card" v-else>
           <div>
-            <p class="entity-name">Nessuna campagna</p>
-            <p class="entity-meta">Crea la prima campagna per alimentare dashboard, party, inventario e combattimenti.</p>
+            <p class="list-title">Nessuna campagna</p>
+            <p class="list-meta">Crea la prima campagna per alimentare dashboard, party, inventario e combattimenti.</p>
           </div>
         </article>
       </section>
