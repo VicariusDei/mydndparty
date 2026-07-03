@@ -7,6 +7,39 @@ export type User = {
   is_admin: boolean;
 };
 
+export type GameGroup = {
+  id: number;
+  name: string;
+  slug: string | null;
+  description: string | null;
+  created_by_user_id: number;
+  is_active: number | boolean;
+  created_at: string;
+  updated_at: string | null;
+  my_role?: string;
+  my_status?: string;
+  members_count?: number;
+  campaigns_count?: number;
+};
+
+export type GameGroupMember = {
+  id: number;
+  game_group_id: number;
+  user_id: number;
+  username_snapshot: string | null;
+  role: string;
+  status: string;
+  invited_by_user_id: number | null;
+  invited_at: string | null;
+  joined_at: string | null;
+  created_at: string;
+  updated_at: string | null;
+  username: string;
+  display_name: string | null;
+  email: string;
+  avatar_url: string | null;
+};
+
 export type Campaign = {
   id: number;
   name: string;
