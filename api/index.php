@@ -18,6 +18,8 @@ require_once __DIR__ . '/modules/Auth/AuthRepository.php';
 require_once __DIR__ . '/core/Auth.php';
 require_once __DIR__ . '/modules/Auth/AuthController.php';
 require_once __DIR__ . '/modules/Auth/GoogleAuthController.php';
+require_once __DIR__ . '/modules/Groups/GroupsRepository.php';
+require_once __DIR__ . '/modules/Groups/GroupsController.php';
 require_once __DIR__ . '/modules/Campaigns/CampaignRepository.php';
 require_once __DIR__ . '/modules/Campaigns/CampaignController.php';
 require_once __DIR__ . '/modules/Party/PartyRepository.php';
@@ -63,6 +65,8 @@ try {
     $authController = new AuthController($authRepository, $config);
     $googleAuthController = new GoogleAuthController($authRepository, $authController, $config);
 
+    $groupsRepository = new GroupsRepository($pdo);
+    $groupsController = new GroupsController($groupsRepository, $config);
     $campaignRepository = new CampaignRepository($pdo);
     $campaignController = new CampaignController($campaignRepository, $config);
     $partyRepository = new PartyRepository($pdo);
@@ -104,6 +108,21 @@ try {
             break;
         case 'dashboard/summary':
             $dashboardController->summary();
+            break;
+        case 'groups/list':
+            $groupsController->list();
+            break;
+        case 'groups/create':
+            $groupsController->create();
+            break;
+        case 'groups/members':
+            $groupsController->members();
+            break;
+        case 'groups/member/add':
+            $groupsController->addMember();
+            break;
+        case 'groups/user/find':
+            $groupsController->findUser();
             break;
         case 'campaigns/list':
             $campaignController->list();
