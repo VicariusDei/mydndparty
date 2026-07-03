@@ -20,6 +20,7 @@ La dashboard e i menu non devono mostrare dati fittizi. Ogni sezione deve rispet
 - Attivazione campagna tramite `campaigns/activate`.
 - Eliminazione sicura campagna vuota tramite `campaigns/delete`.
 - Party / personaggi da `mdp_party_members`.
+- CRUD personaggi tramite `party/create`, `party/update`, `party/delete`.
 - Inventario da `mdp_inventory_items`.
 - CRUD oggetti tramite `inventory/create`, `inventory/update`, `inventory/delete`.
 - Portafoglio da `mdp_wallets` e `mdp_coin_types`.
@@ -35,9 +36,39 @@ La dashboard e i menu non devono mostrare dati fittizi. Ogni sezione deve rispet
 - Ricerca globale.
 - Dado rapido.
 - Diario campagna strutturato per eventi separati.
+- Tabelle dedicate classi/razze.
 - Impostazioni da `cfgSistema`, `cfgLingua`, `cfgUtenti`.
 
 ## Migrazione legacy portata
+
+### Party / personaggi
+
+Origine legacy:
+
+- `carica_compagnia.php`
+- `compagnia`
+- `classi`
+- `razze`
+
+Portato nella nuova app:
+
+- elenco personaggi per campagna attiva;
+- creazione personaggio;
+- modifica personaggio;
+- eliminazione solo se il personaggio non è collegato a inventario o combattimenti;
+- gestione nome giocatore;
+- gestione nome personaggio;
+- classe testuale;
+- razza/stirpe testuale;
+- motto/nota breve;
+- bonus iniziativa.
+
+Da rifinire:
+
+- tabelle dedicate classi e razze;
+- selezione classe/razza da lookup reale;
+- associazione collaborativa utente/personaggio;
+- campi scheda avanzati.
 
 ### Campagne / diario
 
@@ -117,22 +148,19 @@ Da rifinire:
 
 ## Prossime priorità
 
-### 1. Party / personaggi completo
+### 1. Lookup classi / razze
 
 Origine legacy:
 
-- `carica_compagnia.php`
-- `compagnia`
 - `classi`
 - `razze`
 
 Obiettivo nuova app:
 
-- modifica personaggio;
-- eliminazione controllata;
-- selezione classe/razza da tabelle reali;
-- gestione bonus iniziativa;
-- associazione utente/personaggio.
+- creare tabelle `mdp_classes` e `mdp_ancestries`;
+- migrare classi e razze legacy;
+- collegare i personaggi a lookup reali;
+- mantenere fallback testuale per dati sporchi o personalizzati.
 
 ### 2. Social minimo
 
