@@ -11,6 +11,7 @@ import '@ionic/vue/css/display.css';
 
 import './theme/variables.css';
 import './theme/app.css';
+import './theme/mdp-design.css';
 
 const app = createApp(App).use(IonicVue).use(router);
 
