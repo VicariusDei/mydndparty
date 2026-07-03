@@ -7,9 +7,9 @@
           <ion-icon :icon="homeOutline" />
           <ion-label>Dashboard</ion-label>
         </ion-tab-button>
-        <ion-tab-button tab="campaigns" :href="tabHref('/tabs/campaigns')">
-          <ion-icon :icon="mapOutline" />
-          <ion-label>Campagne</ion-label>
+        <ion-tab-button tab="notes" :href="tabHref('/tabs/notes')">
+          <ion-icon :icon="documentTextOutline" />
+          <ion-label>Note</ion-label>
         </ion-tab-button>
         <ion-tab-button tab="party" :href="tabHref('/tabs/party')">
           <ion-icon :icon="peopleOutline" />
@@ -40,9 +40,9 @@ import {
 } from '@ionic/vue';
 import {
   cubeOutline,
+  documentTextOutline,
   flashOutline,
   homeOutline,
-  mapOutline,
   peopleOutline
 } from 'ionicons/icons';
 
