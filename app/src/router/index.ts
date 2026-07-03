@@ -35,6 +35,10 @@ const routes = [
         component: () => import('../views/DashboardPage.vue')
       },
       {
+        path: 'groups',
+        component: () => import('../views/GroupsPage.vue')
+      },
+      {
         path: 'sessions',
         component: () => import('../views/SessionsPage.vue')
       },
