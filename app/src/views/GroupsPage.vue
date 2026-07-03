@@ -105,7 +105,7 @@ async function loadGroups() {
 }
 
 async function loadMembers(groupId: number) {
-  const response = await apiGet<MembersPayload>(`groups/members&group_id=${groupId}`);
+  const response = await apiGet<MembersPayload>('groups/members', { group_id: groupId });
   if (response.ok) members.value = response.data?.members || [];
 }
 
