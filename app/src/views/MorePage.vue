@@ -40,12 +40,12 @@ const router = useRouter();
 
 const entries = [
   { title: 'Dashboard', description: 'Riepilogo reale di campagna, party, inventario e combattimento.', to: '/tabs/dashboard' },
+  { title: 'Note giocatori', description: 'Appunti subito visibili con visibilità party, privata o ristretta.', to: '/tabs/notes' },
   { title: 'Campagne', description: 'Elenco campagne, attivazione e diario master.', to: '/tabs/campaigns' },
   { title: 'Party', description: 'Personaggi migrati da compagnia e nuovi personaggi.', to: '/tabs/party' },
   { title: 'Inventario', description: 'Oggetti, categorie, quantità, valore e identificazione.', to: '/tabs/inventory' },
   { title: 'Combattimento', description: 'Encounter e iniziativa migrati dalle pagine legacy.', to: '/tabs/combat' },
-  { title: 'Messaggi', description: 'Modulo presente ma non ancora attivato: nessun dato fittizio.', to: '/tabs/more' },
-  { title: 'Richieste amicizia', description: 'Modulo presente ma non ancora attivato: nessuna richiesta fittizia.', to: '/tabs/more' },
+  { title: 'Off-sessione', description: 'Modulo progettato nel DB, sviluppo prossimo.', to: '/tabs/more' },
   { title: 'Impostazioni', description: 'Da collegare a cfgSistema, cfgLingua e preferenze utente.', to: '/tabs/more' }
 ];
 
