@@ -30,7 +30,7 @@ jobs:
 
       - name: Install frontend dependencies
         working-directory: app
-        run: npm install
+        run: npm ci
 
       - name: Build frontend for /mydndparty/
         working-directory: app
@@ -48,6 +48,7 @@ jobs:
           mkdir -p deploy-package/api
           rsync -av \
             --exclude='config/config.php' \
+            --exclude='tests/' \
             api/ deploy-package/api/
 
           # Fallback SPA per refresh diretto su rotte Ionic/Vue.

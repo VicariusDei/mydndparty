@@ -39,6 +39,7 @@ import { logout } from '../services/auth';
 const router = useRouter();
 
 const entries = [
+  { title: 'PNG · Regia IA', description: 'Personaggi per campagna, terminale vocale e memoria controllata dal master.', to: '/tabs/npc' },
   { title: 'Dashboard', description: 'Riepilogo reale di campagna, party, inventario e combattimento.', to: '/tabs/dashboard' },
   { title: 'Sessioni / Diario', description: 'Cronologia sessioni, data nel mondo, riassunti e note master.', to: '/tabs/sessions' },
   { title: 'Note giocatori', description: 'Appunti subito visibili con visibilità party, privata o ristretta.', to: '/tabs/notes' },
