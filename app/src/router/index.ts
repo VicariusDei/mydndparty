@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from '@ionic/vue-router';
 import TabsLayout from '../views/TabsLayout.vue';
 
 const routes = [
+  { path: '/npc-terminal', component: () => import('../views/NpcPage.vue') },
   {
     path: '/',
     redirect: '/login'
@@ -61,6 +62,10 @@ const routes = [
       {
         path: 'combat',
         component: () => import('../views/CombatPage.vue')
+      },
+      {
+        path: 'npc',
+        component: () => import('../views/NpcPage.vue')
       },
       {
         path: 'more',

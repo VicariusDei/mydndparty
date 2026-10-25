@@ -36,6 +36,8 @@ require_once __DIR__ . '/modules/PlayerNotes/PlayerNotesRepository.php';
 require_once __DIR__ . '/modules/PlayerNotes/PlayerNotesController.php';
 require_once __DIR__ . '/modules/Dashboard/DashboardController.php';
 
+require_once __DIR__ . '/modules/Npc/NpcController.php';
+
 session_set_cookie_params([
     'lifetime' => 0,
     'path' => Security::cookiePath($config),
@@ -84,6 +86,10 @@ try {
     $playerNotesRepository = new PlayerNotesRepository($pdo);
     $playerNotesController = new PlayerNotesController($playerNotesRepository, $campaignRepository, $config);
     $dashboardController = new DashboardController($campaignRepository, $partyRepository, $inventoryRepository, $combatRepository, $sessionsRepository, $config);
+
+    if (str_starts_with($route, 'npc/')) {
+        (new NpcController($pdo, $config))->handle(substr($route, 4));
+    }
 
     switch ($route) {
         case 'auth/me':

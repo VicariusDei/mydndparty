@@ -9,12 +9,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@ionic/vue": "latest",
-    "@ionic/vue-router": "latest",
-    "@capacitor/core": "latest",
     "@capacitor/app": "latest",
+    "@capacitor/core": "latest",
     "@capacitor/haptics": "latest",
     "@capacitor/keyboard": "latest",
+    "@ionic/vue": "latest",
+    "@ionic/vue-router": "latest",
     "ionicons": "latest",
     "vue": "latest",
     "vue-router": "latest"
@@ -22,7 +22,7 @@
   "devDependencies": {
     "@capacitor/cli": "latest",
     "@vitejs/plugin-vue": "latest",
-    "typescript": "latest",
+    "typescript": "~5.9.3",
     "vite": "latest",
     "vue-tsc": "latest"
   }
